@@ -1,0 +1,31 @@
+{% extends 'adminBase.html' %}
+{%block users-active %} active {%  endblock %}
+{% block contant %}
+<table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">NO.</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone.no</th>  
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in users %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ i.username }}</td>
+        <td>{{ i.email }} </td>
+        <td><p>{{ i.phone }}</p></td>
+        {% if i.user.is_active %}
+        <td><a href="{% url 'user_active' i.id %}"><button type="button"  class="btn btn-danger" data-toggle="modal" data-target="#editmodal">Block</button></a></td>
+        {% else %}
+         <td><a href="{% url 'user_active' i.id %}"><button type="button"  class="btn btn-success" data-toggle="modal" data-target="#editmodal">Unblock</button></a></td> -->
+        {% endif %}
+        <td><a href="{% url 'delete_user' i.id %}" onclick="return confirm('Are you sure you want to delete?');" class="text-danger">Delete</a> </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}

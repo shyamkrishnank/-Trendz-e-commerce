@@ -1,0 +1,36 @@
+{% extends 'adminBase.html' %}
+{%block products_active %} active {%  endblock %}
+
+{% block contant %}
+<style>
+    .custom-card {
+      width: 200px; /* Set the desired width */
+      height: 300px; /* Set the desired height */
+    }
+  </style>
+<div class="page-header">
+    <h3 class="page-title"> Products</h3>
+ </div>
+ <div class="page-header">
+    <h3 class="page-title"> Categories</h3>
+ </div>
+ <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for i in category %}
+    <div class="col">
+        <a href="{% url 'product_details' i.id %}">
+      <div class="card custom-card">
+        <img src="{{ i.image.url }}" class="card-img-top w-100 h-100" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ i.name }}</h5>
+        </div>
+      </div>
+    </a>
+    </div>
+    {% endfor %}
+   
+ 
+  </div>
+
+
+
+{% endblock %}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #262727;
+    }
+    .login-container {
+      margin-top: 150px;
+    }
+    .login-form {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    }
+    .form-control:focus {
+      box-shadow: none;
+    }
+    .login-form .btn {
+      background-color: #563d7c;
+      color: #ffffff;
+    }
+    .login-form .btn:hover {
+      background-color: #452d61;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-4 login-container">
+        <div class="login-form">
+          <h4 class="text-center">Admin Login</h4>
+          <form method="POST">
+            <div class="form-group">
+                {% csrf_token %}
+              <label for="username">Username</label>
+              <input type="text"  class="form-control" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-block">Login</button><br>
+              <div class="text-center mt-3">
+                <p>Not an admin? <a href="#">User Login</a></p>
+                <p class="text-center text-danger">{{message}}</p>
+              </div>
+            </div>
+            </div>
+           
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

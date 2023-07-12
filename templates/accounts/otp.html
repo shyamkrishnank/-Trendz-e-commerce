@@ -1,0 +1,40 @@
+
+{% extends 'accountsBase.html' %}
+{% block contant %}
+{% load static %}
+<div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17" style="background-image: url('{% static 'accounts/assets/images/backgrounds/login-bg.jpg' %}')">
+    <div class="container">
+        <div class="form-box">
+            <div class="form-tab">
+                <ul class="nav nav-pills nav-fill" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" id="signin-tab-2" data-toggle="tab" role="tab" aria-controls="signin-2" aria-selected="false"></a>
+                    </li>             
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="register-tab-2">
+                        <form method="POST" action="{%  url 'otp_validate' %}">
+                            {% csrf_token %}
+                            <div class="form-group text-center">
+                                <label for="register-email-2">Your otp is send to the given phone number</label>
+                                <input type="input" class="form-control text-center" maxlength="4" id="inputField" placeholder="ENTER THE OTP" name="otp"  required>
+                            </div><!-- End .form-group -->
+
+                            <div class="form-footer">
+                                <button type="submit" class="btn btn-outline-primary-2 mx-3 ">
+                                    <span>SUBMIT</span>
+                                <i class="icon-long-arrow-right"></i>
+                                </button>
+
+                                <P><a href="#">RESEND OTP</a></p>
+
+                            </div><!-- End .form-footer -->
+                        </form>
+                            </div><!-- End .row -->
+                        </div><!-- End .form-choice -->
+                    </div><!-- .End .tab-pane -->
+                </div><!-- End .tab-content -->
+            </div><!-- End .form-tab -->
+        </div><!-- End .form-box -->
+
+{% endblock %}

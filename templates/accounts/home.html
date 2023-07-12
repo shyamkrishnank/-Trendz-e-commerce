@@ -1,0 +1,90 @@
+{% extends 'accountsBase.html' %}
+{% block contant %}
+{% load static %}
+
+
+
+
+
+<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="media/banner/corosel1.png" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="media/banner/corosel2.png" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="media/banner/corosel3.png" class="d-block w-100" alt="...">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+
+<div class="pt-2 pb-2">
+    <div class="container brands">
+
+        <div class="heading heading-flex align-items-center mb-3 text-align-center ">
+            <h2 class="title title-lg ">SHOP BY GENDER</h2>
+        </div>
+
+        <div class="banner-group">
+            <div class="row">
+                {% for i in category %}
+                <div class="col-sm-6 col-lg-4">
+                    <div class="banner banner-overlay">
+                        <a href="{% url 'products' i.id %}">
+                            <img  src="{{ i.image.url }}" alt="Banner">
+                        </a>
+
+                        <div class="banner-content">
+                            <h4 class="banner-subtitle"><a href="{% url 'products' i.id %}"></a></h4><!-- End .banner-subtitle -->
+                            <h3 class="banner-title"><a href="{% url 'products' i.id %}"><strong>{{ i.name }} </strong> <br>up to 60% off</a></h3><!-- End .banner-title -->
+                            <a href="{% url 'products' i.id %}" class="btn btn-outline-white banner-link">Shop Now <i class="icon-long-arrow-right"></i></a>
+                        </div><!-- End .banner-content -->
+                    </div><!-- End .banner -->
+                </div><!-- End .col-lg-4 -->
+                {% endfor %}
+            </div><!-- End .row -->
+        </div><!-- End .banner-group -->
+    </div><!-- End .container -->
+</div>
+
+<div class="intro-slide d-flex"  style="background-color: aliceblue;">
+    <img style="width: 100%;"  src=" media/banner/banner1.png">
+</div>
+
+
+
+<div class="heading text-center my-5">
+    <h2 class="title title-lg">Follow Us On Instagram</h2><!-- End .title -->
+    <p class="title-desc my-2">Wanna share your style with us?</p><!-- End .title-desc -->
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <img src="media/banner/insta1.jpg" alt="img" class="img-fluid ">
+        </div>
+        <div class="col">
+            <img src="media/banner/insta2.jpg" alt="img" class="img-fluid ">
+        </div>
+        <div class="col">
+            <img src="media/banner/insta3.jpg" alt="img"c lass="img-fluid">
+        </div>
+        <div class="col">
+            <img src="media/banner/insta4.jpg" alt="img" class="img-fluid ">
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

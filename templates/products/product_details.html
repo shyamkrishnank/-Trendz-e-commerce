@@ -1,0 +1,155 @@
+{% extends 'adminBase.html' %}
+{%block products_active %} active {%  endblock %}
+
+{% block contant %}
+<style>
+    .custom-card {
+      width: 200px; /* Set the desired width */
+      height: 300px; /* Set the desired height */
+    }
+  </style>
+<div class="page-header">
+    <h3 class="page-title"> {{ current.name }} </h3>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'products' %}" class="btn btn-success">Back</a></li>
+        <li class="breadcrumb-item"><a><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+            +Add product
+          </button></a></li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="modal fade" id ="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Category</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="{% url 'add_product'  %}" method="post" enctype="multipart/form-data">
+           
+              {% csrf_token %}
+                <label for="categoryName">Product Name:</label><br>
+                <input type="text" id="categoryName" name="name"   required> <br>
+
+                <label for="categoryName">Product Price:</label><br>
+                <input type="text" id="categoryName" name="price"   required> <br>
+
+                <label for="categoryName">Product Stock:</label><br>
+                <input type="text" id="categoryName" name="stock"   required> <br>
+
+                
+                <label for="categoryName">Product Discription:</label><br>
+                <input type="text" id="categoryName" name="discription"   required> <br>
+
+                <label for="categoryName">Category</label><br>
+                     <select id="inputField" name="id">
+                      {% for j in category %}
+                        <option value="{{j.id}}">{{ j.name }}</option>
+                      {% endfor %}
+                    </select><br>
+                    
+                <label for="categoryImage">Product Image:</label><br>
+                <input type="file" id="categoryImage" name="images"  accept="image/*" multiple required><br>
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Add product</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <table class="table table-dark">
+    <thead>
+        <tr>
+            <th scope="col">NO.</th>
+            <th scope="col">name</th>
+            <th scope="col">images</th>
+            <th scope="col">price</th>  
+            <th scope="col">stock</th>  
+          </tr>
+    </thead>
+    <tbody>
+        {% for i in products %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ i.name }}</td>
+        <td>
+          {%  for image in i.images.all %}
+            <img src="{{ image.image.url }}" alt="Product Image" width="100">
+          {% endfor %}
+        </td>
+        <td>{{ i.price }}</td>
+        <td>{{ i.stocks }}</td>
+        <td>
+          <a  data-toggle="modal" data-target="#editmodal{{ i.id }}" href="#">Edit</a>
+        </td>
+        <td>
+          <a href="{% url 'delete_product' i.id %}" onclick="return confirm('Are you sure you want to delete?');" class="text-danger" >Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+
+  {% for i in products %}
+  <div class="modal fade" id="editmodal{{ i.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Product</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="{% url 'edit_product' i.id %}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+                <label for="categoryName">Product Name:</label><br>
+                <input type="text" id="categoryName" name="name" placeholder="{{i.name}}" value="{{i.name}}" required> <br>
+        
+                <label for="categoryImage">Category Image:</label><br>
+                <input type="file" id="categoryImage" name="image" value="{{i.images.all}}"  accept="image/*" multiple required><br>
+
+                <label for="categoryName">Product stock:</label><br>
+                <input type="text" id="categoryName" name="stock" placeholder="{{i.stocks}}" value="{{i.stocks}}" required> <br>
+
+                <label for="categoryName">Product price:</label><br>
+                <input type="text" id="categoryName" name="price" placeholder="{{i.price}}" value="{{i.price}}" required> <br>
+
+                <label for="categoryName">Product discription:</label><br>
+                <input type="text" id="categoryName" name="disciption" placeholder="{{i.discription}}" value="{{i.discription}}" required> <br>
+
+                <label for="categoryName">Category</label><br>
+                     <select id="inputField" name="id" >
+                      {% for cat in category %}
+                        <option value="{{cat.id}}" >{{ cat.name }}</option><br>
+                      {% endfor %}
+                    </select>         
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save category</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+
+
+
+
+
+{% endblock %}
