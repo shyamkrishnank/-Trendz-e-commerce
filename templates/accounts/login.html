@@ -33,10 +33,10 @@
                                 </button>
 
                                 <p >Not yet registerd? <a href="{% url 'user_signup' %}">REGISTER</a></p>
-                                {% if message %}
-                                <p class="text-center text-danger">{{message}}</p>
-                                {% endif %}
                             </div><!-- End .form-footer -->
+                            {% if message %}
+                            <p class="text-center text-danger">{{message}}</p>
+                            {% endif %}
                         </form>
                             </div><!-- End .row -->
                         </div><!-- End .form-choice -->

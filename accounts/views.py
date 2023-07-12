@@ -22,11 +22,11 @@ def login(request):
         pass1 = request.POST.get('password')
         try:
             user = Users.objects.get(email=email)
+            if not  user.user.is_active:
+                 message = 'User Blocked!'
+                 return render(request, 'accounts/login.html', {'message': message})
             temp_user = authenticate(request, username=user.username, password=pass1)
-            if temp_user is not None:
-                if not temp_user.is_active:
-                    message = 'User Blocked!'
-                    return render(request, 'accounts/login.html', {'message': message})
+            if temp_user:
                 user_exists = user.username
                 request.session['user_exists'] = user_exists
                 return redirect('home')
@@ -108,9 +108,10 @@ def products(request,id):
     return render(request,'accounts/products.html',{'products':products,'count':count,'category':category})
 
 def product_detail(request,id):
+    category = Category.objects.all()
     main_product = Products.objects.get(id = id)
     related_products = Products.objects.exclude(id = id )
-    return render(request,'accounts/product_details.html',{'main_product':main_product,'related_products':related_products})
+    return render(request,'accounts/product_details.html',{'main_product':main_product,'related_products':related_products,'category':category})
 
 def logout(request):
     del request.session['user_exists']
