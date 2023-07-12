@@ -16,27 +16,19 @@ def home(request):
         return render(request,'accounts/home.html',{'category':category,'user_exists':user_exists})
     return render(request,'accounts/home.html',{'category':category})
 
+
+
 def login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
-        pass1 = request.POST.get('password')
-        try:
-            user = Users.objects.get(email=email)
-            temp_user = authenticate(request, username=user.username, password=pass1)
-            if temp_user is not None:
-                if not temp_user.is_active:
-                    message = 'User Blocked!'
-                    return render(request, 'accounts/login.html', {'message': message})
-                user_exists = user.username
-                request.session['user_exists'] = user_exists
-                return redirect('home')
-            else:
-                message = 'Invalid email or password!'
-                return render(request, 'accounts/login.html', {'message': message})
-        except Users.DoesNotExist:
-            message = 'Invalid email or password!'
-            return render(request, 'accounts/login.html', {'message': message})
-    return render(request, 'accounts/login.html')
+        
+    else:
+        message = 'Invalid email or password!'
+        return render(request, 'accounts/login.html', {'message': message})
+except Users.DoesNotExist:
+    message = 'Invalid email or password!'
+    return render(request, 'accounts/login.html', {'message': message})
+return render(request, 'accounts/login.html')
 
 
 
@@ -82,7 +74,7 @@ def signup(request):
             }
             return redirect('otp_validate')
         else:
-            message = 'otp did not match!'
+            message = 'Enter correct password!'
             return render(request,'accounts/signup.html',{'message':message})
            
     return render(request,'accounts/signup.html')
