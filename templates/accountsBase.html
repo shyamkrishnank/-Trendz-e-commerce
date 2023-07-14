@@ -44,8 +44,7 @@
                             <li><a href="#">About Us</a></li>
                             <li><a href="#">Contact Us</a></li>
                             {% if user_exists %}
-                            <li> <a href=""  ><span class=“fw-bold” >{{ user_exists }}</span> </a> </li>
-                            <li> <a href="{% url 'user_logout' %}" > logout</span> </a> </li>
+                            <li> <a href="{% url 'user_profile' %}"><span class=“text-bold” >{{ user_exists }}</span> </a></li>
                             {% else %}
                             <li><a href="{% url 'user_login' %}"> <i class="icon-user"></i>Login</a></li>
                             {% endif %}

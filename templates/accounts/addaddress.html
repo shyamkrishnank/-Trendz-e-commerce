@@ -1,0 +1,80 @@
+{% extends 'accountsBase.html' %}
+{% block contant %}
+{% load static %}
+<main class="main">
+    <div class="page-header text-center" >
+        <div class="container">
+            <h1 class="page-title">My Account</h1>
+        </div><!-- End .container -->
+    </div><!-- End .page-header -->
+    
+    <div class="container">
+        <div class="form-box">
+            <div class="form-tab">
+                <ul class="nav nav-pills nav-fill" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" id="signin-tab-2" data-toggle="tab" role="tab" aria-controls="signin-2" aria-selected="false">Add Address</a>
+                    </li>
+                
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="register-2" role="tabpanel" aria-labelledby="register-tab-2">
+                        <form method="POST" action="{% url 'add_address' 0 %}" >
+                            {% csrf_token %}
+
+                            <div class="form-group">
+                                <label for="register-email-2">Your Full Name *</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div><!-- End .form-group -->
+
+
+
+                            <div class="form-group">
+                                <label for="register-email-2">Address *</label>
+                                <input type="text" class="form-control" id="register-email" name="address" required>
+                            </div><!-- End .form-group -->
+
+                            <div class="form-group">
+                                <label for="register-email-2"> City *</label>
+                                <input type="text" class="form-control" id="phone" name="city" required>
+                            </div><!-- End .form-group -->
+
+
+                            <div class="form-group">
+                                <label for="register-password-2">State *</label>
+                                <input type="text" class="form-control" id="register-password-1" name="state" required>
+                            </div><!-- End .form-group -->
+
+                            <div class="form-group">
+                                <label for="register-email-2">Postal Code *</label>
+                                <input type="text" class="form-control" id="register-password" name="postalcode" required>
+                            </div><!-- End .form-group -->
+
+                            <div class="form-group">
+                                <label for="register-email-2">Country *</label>
+                                <input type="text" class="form-control" id="register-password" placeholder="India"  value="India"  name="country" required>
+                            </div><!-- End .form-group -->
+
+                            <label> Set as default address </label>
+                            <input type="checkbox" name="checkbox" {{check}}>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-outline-primary-2">
+                                    <span>SUBMIT</span>
+                                <i class="icon-long-arrow-right"></i>
+                                </button> 
+                                {% if message %}
+                                <p class="text-center text-danger">{{message}}</p>
+                                {% endif %}
+                            </div><!-- End .f-->
+                            </div> <!-- End .form-footer -->
+                        </form>
+                            </div><!-- End .row -->
+                        </div><!-- End .form-choice -->
+                    </div><!-- .End .tab-pane -->
+                </div><!-- End .tab-content -->
+           
+
+</main>
+
+{% endblock %}

@@ -13,11 +13,8 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="register-tab-2">
-                        <form method="POST" action="{%  url 'otp_validate' %}">
+                        <form method="POST" action="{%  url 'otp_validater' %}" class="text-center">
                             {% csrf_token %}
-                            {% if message %}
-                            <p class="'text-danger">{{ message }}</p>
-                            {% endif %}
                             <div class="form-group text-center">
                                 <label for="register-email-2">Your otp is send to the given phone number</label>
                                 <input type="input" class="form-control text-center" maxlength="4" id="inputField" placeholder="ENTER THE OTP" name="otp"  required>
@@ -29,9 +26,12 @@
                                 <i class="icon-long-arrow-right"></i>
                                 </button>
 
-                                <P><a href="#">RESEND OTP</a></p>
+                                <P><a href="{% url 'change_password' %}">RESEND OTP</a></p><br>
 
                             </div><!-- End .form-footer -->
+                            {% if message %}
+                                 <p class="text-danger">{{message}}</p>
+                                  {% endif %}
                         </form>
                             </div><!-- End .row -->
                         </div><!-- End .form-choice -->

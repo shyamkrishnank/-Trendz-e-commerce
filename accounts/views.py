@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login
-from . models import Users
+from . models import Users,Address
 import random
+from django.db.models import Q
 from twilio.rest import Client
 from django.contrib.auth.models import User
 from category.models import Category
@@ -12,8 +13,7 @@ from products.models import Products,ProductImage
 def home(request):
     category = Category.objects.all()
     if 'user_exists' in request.session:
-        user_exists = request.session['user_exists']
-        return render(request,'accounts/home.html',{'category':category,'user_exists':user_exists})
+        return render(request,'accounts/home.html',{'category':category,'user_exists':request.session['user_exists']})
     return render(request,'accounts/home.html',{'category':category})
 
 def login(request):
@@ -116,5 +116,102 @@ def product_detail(request,id):
 def logout(request):
     del request.session['user_exists']
     return redirect('user_login')
+
+def user_profile(request):
+    main_address = None
+    related_address = None
+    user = Users.objects.get(username = request.session.get('user_exists'))
+    try:
+        related_address = Address.objects.filter(Q(user = user) & Q(current = False) & Q(active = True)).first() 
+        try:
+            main_address = Address.objects.get(Q(user = user) & Q(current = True) )   
+        except:
+           pass
+    except:
+            pass
+    if request.method == 'POST':
+        user.username = request.POST.get('name')
+        request.session['user_exists'] = user.username
+        user.email = request.POST.get('email')
+        user.phone = request.POST.get('phone')
+        user.user.username = request.POST.get('name')
+        user.user.save()
+        user.save()
+        return redirect('user_profile')
+    return render(request,'accounts/profile.html',{'user':user,'user_exists':user.username,'main_address':main_address,'related_address':related_address})
+
+def change_password(request):
+        otp = str(random.randint(1000,9999))
+        # send_otp(otp)
+        request.session['otp'] = otp
+        print("---------------------------------------")
+        print(otp)
+        print("---------------------------------------")
+        return render(request,'accounts/passotp.html')
+def otp_validater(request):
+        if request.method == 'POST':
+            entered_otp = request.POST.get('otp')
+            if entered_otp == request.session['otp']:
+                return redirect('passwordsetter')
+            return render(request,'accounts/passotp.html',{'message':'OTP doesnot match!'})
+            
+def passwordsetter(request):
+    if request.method == 'POST':
+        if request.POST['password'] == request.POST['cpassword']:
+             user = User.objects.get(username = request.session['user_exists'])
+             user.set_password(request.POST.get('password'))
+             user.save()
+             return redirect('user_profile')
+        return render(request,'accounts/changepassword.html',{'message':'Enter the correct password!'})
+    return render(request,'accounts/changepassword.html')
+
+def add_address(request,check):
+    if request.method == 'POST':
+        user = User.objects.get(username = request.session['user_exists'])
+        name = request.POST.get('name')
+        address = request.POST.get('address')
+        state = request.POST.get('state') 
+        city = request.POST.get('city')
+        country = request.POST.get('country')
+        postalcode = request.POST.get('postalcode')
+        checkbox = request.POST.get('checkbox')
+        if checkbox == 'on':
+            current = True
+            try:
+                related_address = Address.objects.get(Q(user = user) & Q(current = 'True') & Q(active = True) )
+                related_address.current = False
+                related_address.save()
+            except:
+                pass
+        else:
+            current = False
+        add = Address.objects.create(user = user.c_user,fullname = name, address1 = address,state = state, city = city,country = country, postalcode = postalcode,current = current )
+        add.save()
+        return redirect('user_profile')
+    if check==1:
+        return render(request, 'accounts/addaddress.html',{'check':'checked'})
+    return render(request, 'accounts/addaddress.html',{'check':'0'})
+
+def edit_address(request,id):
+    edit = Address.objects.get(id = id)
+    if request.method == 'POST':
+        edit.fullname = request.POST.get('name')
+        edit.address1 = request.POST.get('address')
+        edit.state = request.POST.get('state') 
+        edit.city = request.POST.get('city')
+        edit.country = request.POST.get('country')
+        edit.postalcode = request.POST.get('postalcode')
+        edit.save()
+        return redirect('user_profile')
+    return render(request,'accounts/editaddress.html',{'address':edit})
+
+def delete_address(request,id):
+    edit = Address.objects.get(id = id)
+    if edit.current == True:
+        edit.current = False
+    edit.active = False
+    edit.save()
+    return redirect('user_profile')
+        
 
     
