@@ -133,11 +133,11 @@
     <!--                                    </div>&lt;!&ndash; End .details-filter-row &ndash;&gt;-->
     
                                         <div class="product-details-action">
-                                            <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                            <a href="#" class="btn-product btn-cart"><span>Buy now</span></a>
     
                                             <div class="details-action-wrapper">
                                                 <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
-                                                <a href="#" class="btn-product btn-compare" title="Compare"><span>Add to Compare</span></a>
+                                                <a href="{% url 'add_cart' main_product.id %}" class="btn-product icon-shopping-cart btn-cart-wishlist" title="Compare"><span>Add to Cart</span></a>
                                             </div><!-- End .details-action-wrapper -->
                                         </div><!-- End .product-details-action -->
     

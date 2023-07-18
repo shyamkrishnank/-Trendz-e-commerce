@@ -60,7 +60,9 @@ def edit_product(request,id):
                 ProductImage.objects.create(product = product,image = image)
 
             return redirect('product_details',id)
-            
+
+
+
 
     
         

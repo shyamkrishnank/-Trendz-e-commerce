@@ -65,7 +65,7 @@
                 </button>
 
                 <a href="{% url 'home' %}" class="logo">
-                    <img src="{% static 'accounts/assets/images/logo.png' %}" alt="crayon Logo" width="105" height="25">
+                    <img src="{% static 'accounts/assets/images/logo.png' %}" alt="Trendz Logo" width="105" height="25">
                 </a>
 
                 <nav class="main-nav">
@@ -77,8 +77,12 @@
                             <a href="#" class="sf-with-ul">Shop</a>
 
                         </li>
-                        <li>
+                        <li>{% if category %}
                             <a href="#" class="sf-with-ul">Product</a>
+                            {% else %}
+                            <a href="{% url 'home' %}" class="sf-with-ul">Product</a>
+                            {% endif %}   
+                            {% if category %}
                                <ul>
                                 {% for i in category %}
                                 <li>
@@ -86,6 +90,7 @@
                                 </li>
                                 {% endfor %}
                                </ul>
+                               {% endif %}
 
                         </li>
                         <li>
@@ -128,9 +133,8 @@
                 </div><!-- End .header-search -->
 
                 <div class="dropdown cart-dropdown">
-                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                    <a href="{% url 'cart' %}" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" data-display="static">
                         <i class="icon-shopping-cart"></i>
-                        <span class="cart-count"></span>
                     </a>
                 </div><!-- End .cart-dropdown -->
             </div><!-- End .header-right -->

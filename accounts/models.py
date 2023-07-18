@@ -19,12 +19,4 @@ class Address(models.Model):
     current = models.BooleanField(default=False,)
     active = models.BooleanField(default=True)
 
-class Cart(models.Model):
-    user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='cart')
-    created_date = models.DateTimeField(auto_now=True)
-    Address = models.OneToOneField(Address, null=True, on_delete = models.SET_NULL )
 
-class CartItems(models.Model):
-    cart = models.ForeignKey(Cart,on_delete=models.CASCADE, related_name='cartitems')
-    products = models.ForeignKey(Products,related_name="products", on_delete=models.CASCADE)
-    quantity = models.IntegerField()

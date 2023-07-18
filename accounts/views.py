@@ -9,12 +9,14 @@ from category.models import Category
 from products.models import Products,ProductImage
 
 # Create your views here.
-
+# -----------------------------------------------------home----------
 def home(request):
     category = Category.objects.all()
     if 'user_exists' in request.session:
         return render(request,'accounts/home.html',{'category':category,'user_exists':request.session['user_exists']})
     return render(request,'accounts/home.html',{'category':category})
+
+# ---------------------------------------------------------signup/login------
 
 def login(request):
     if request.method == 'POST':
@@ -87,6 +89,11 @@ def signup(request):
            
     return render(request,'accounts/signup.html')
 
+def logout(request):
+    del request.session['user_exists']
+    return redirect('user_login')
+
+
 def otp_validate(request):
     if request.method == 'POST':
         enter_otp = request.POST.get('otp')
@@ -98,24 +105,31 @@ def otp_validate(request):
              return redirect('user_login') 
         else:
             message = 'Wrong OTP entered!'
-            return render(request,'accounts/otp.html',{'message':message})
+            return render(request,'accounts/otp.html',{'message':message,'user_exists':request.session['user_exists']})
     return render(request,'accounts/otp.html')
 
+# ----------------------------------------------------products/products details--------------
+
+
 def products(request,id):
+    user_exists = None
+    if 'user_exists' in request.session:
+        user_exists = request.session['user_exists']
     category = Category.objects.all()
     products = Products.objects.filter(category = Category.objects.get(id = id))
     count = products.count()
-    return render(request,'accounts/products.html',{'products':products,'count':count,'category':category})
+    return render(request,'accounts/products.html',{'products':products,'count':count,'category':category,'user_exists':user_exists})
 
 def product_detail(request,id):
+    user_exists = None
+    if 'user_exists' in request.session:
+        user_exists = request.session['user_exists']
     category = Category.objects.all()
     main_product = Products.objects.get(id = id)
     related_products = Products.objects.exclude(id = id )
-    return render(request,'accounts/product_details.html',{'main_product':main_product,'related_products':related_products,'category':category})
+    return render(request,'accounts/product_details.html',{'main_product':main_product,'related_products':related_products,'category':category,'user_exists':user_exists})
 
-def logout(request):
-    del request.session['user_exists']
-    return redirect('user_login')
+# ------------------------------------------------------userprofile --------------------
 
 def user_profile(request):
     main_address = None
@@ -141,13 +155,17 @@ def user_profile(request):
     return render(request,'accounts/profile.html',{'user':user,'user_exists':user.username,'main_address':main_address,'related_address':related_address})
 
 def change_password(request):
+        user_exists = None
+        if 'user_exists' in request.session:
+            user_exists = request.session['user_exists']
         otp = str(random.randint(1000,9999))
         # send_otp(otp)
         request.session['otp'] = otp
         print("---------------------------------------")
         print(otp)
         print("---------------------------------------")
-        return render(request,'accounts/passotp.html')
+        return render(request,'accounts/passotp.html',{'user_exists':user_exists})
+
 def otp_validater(request):
         if request.method == 'POST':
             entered_otp = request.POST.get('otp')
@@ -162,10 +180,16 @@ def passwordsetter(request):
              user.set_password(request.POST.get('password'))
              user.save()
              return redirect('user_profile')
-        return render(request,'accounts/changepassword.html',{'message':'Enter the correct password!'})
-    return render(request,'accounts/changepassword.html')
+        return render(request,'accounts/changepassword.html',{'message':'Enter the correct password!','user_exists':user.username})
+    user_exists = None
+    if 'user_exists' in request.session:
+        user_exists = request.session['user_exists']
+    return render(request,'accounts/changepassword.html',{'user_exists':user_exists})
 
 def add_address(request,check):
+    user_exists = None
+    if 'user_exists' in request.session:
+        user_exists = request.session['user_exists']
     if request.method == 'POST':
         user = User.objects.get(username = request.session['user_exists'])
         name = request.POST.get('name')
@@ -189,10 +213,13 @@ def add_address(request,check):
         add.save()
         return redirect('user_profile')
     if check==1:
-        return render(request, 'accounts/addaddress.html',{'check':'checked'})
-    return render(request, 'accounts/addaddress.html',{'check':'0'})
+        return render(request, 'accounts/addaddress.html',{'check':'checked','user_exists':user_exists})
+    return render(request, 'accounts/addaddress.html',{'check':'0','user_exists':user_exists})
 
 def edit_address(request,id):
+    user_exists = None
+    if 'user_exists' in request.session:
+        user_exists = request.session['user_exists']
     edit = Address.objects.get(id = id)
     if request.method == 'POST':
         edit.fullname = request.POST.get('name')
@@ -203,7 +230,7 @@ def edit_address(request,id):
         edit.postalcode = request.POST.get('postalcode')
         edit.save()
         return redirect('user_profile')
-    return render(request,'accounts/editaddress.html',{'address':edit})
+    return render(request,'accounts/editaddress.html',{'address':edit,'user_exists':user_exists})
 
 def delete_address(request,id):
     edit = Address.objects.get(id = id)
@@ -212,6 +239,7 @@ def delete_address(request,id):
     edit.active = False
     edit.save()
     return redirect('user_profile')
-        
+    
+
 
     
