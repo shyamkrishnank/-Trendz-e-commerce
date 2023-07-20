@@ -132,17 +132,7 @@ def product_detail(request,id):
 # ------------------------------------------------------userprofile --------------------
 
 def user_profile(request):
-    main_address = None
-    related_address = None
     user = Users.objects.get(username = request.session.get('user_exists'))
-    try:
-        related_address = Address.objects.filter(Q(user = user) & Q(current = False) & Q(active = True)).first() 
-        try:
-            main_address = Address.objects.get(Q(user = user) & Q(current = True) )   
-        except:
-           pass
-    except:
-            pass
     if request.method == 'POST':
         user.username = request.POST.get('name')
         request.session['user_exists'] = user.username
@@ -152,7 +142,7 @@ def user_profile(request):
         user.user.save()
         user.save()
         return redirect('user_profile')
-    return render(request,'accounts/profile.html',{'user':user,'user_exists':user.username,'main_address':main_address,'related_address':related_address})
+    return render(request,'accounts/profile/accountdetails.html',{'user':user,'user_exists':user.username,'name':'Account'})
 
 def change_password(request):
         user_exists = None
@@ -186,6 +176,20 @@ def passwordsetter(request):
         user_exists = request.session['user_exists']
     return render(request,'accounts/changepassword.html',{'user_exists':user_exists})
 
+def address(request):
+    main_address = None
+    related_address = None
+    user = Users.objects.get(username = request.session.get('user_exists'))
+    try:
+        related_address = Address.objects.filter(Q(user = user) & Q(current = False) & Q(active = True)).first() 
+        try:
+            main_address = Address.objects.get(Q(user = user) & Q(current = True) )   
+        except:
+           pass
+    except:
+            pass
+    return render(request,'accounts/profile/address.html',{'user_exists':user.username,'main_address':main_address,'related_address':related_address,'name':'Address'})
+
 def add_address(request,check):
     user_exists = None
     if 'user_exists' in request.session:
@@ -211,7 +215,7 @@ def add_address(request,check):
             current = False
         add = Address.objects.create(user = user.c_user,fullname = name, address1 = address,state = state, city = city,country = country, postalcode = postalcode,current = current )
         add.save()
-        return redirect('user_profile')
+        return redirect('address')
     if check==1:
         return render(request, 'accounts/addaddress.html',{'check':'checked','user_exists':user_exists})
     return render(request, 'accounts/addaddress.html',{'check':'0','user_exists':user_exists})
@@ -229,7 +233,7 @@ def edit_address(request,id):
         edit.country = request.POST.get('country')
         edit.postalcode = request.POST.get('postalcode')
         edit.save()
-        return redirect('user_profile')
+        return redirect('address')
     return render(request,'accounts/editaddress.html',{'address':edit,'user_exists':user_exists})
 
 def delete_address(request,id):
@@ -238,7 +242,7 @@ def delete_address(request,id):
         edit.current = False
     edit.active = False
     edit.save()
-    return redirect('user_profile')
+    return redirect('address')
     
 
 

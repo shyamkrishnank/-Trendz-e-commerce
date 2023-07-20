@@ -1,0 +1,58 @@
+{% extends 'accounts/profile/profileBase.html' %}
+{% load static %}
+{% block profile %}
+<div class="col-md-8" >
+
+    <p>The following addresses will be used on the checkout page by default.</p>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card card-dashboard">
+                <div class="card-body">
+                    <h3 class="card-title">Home Address</h3><!-- End .card-title -->
+                    {% if main_address %}
+                    <p>{{ main_address.fullname }}<br>
+                        {{ main_address.address1 }}<br>
+                        {{ main_address.city }}<br>
+                        {{ main_address.state }}<br>
+                        {{ main_address.postalcode }}<br>
+                        {{ main_address.country }}<br></p>
+                    <a href="{% url 'edit_address' main_address.id %}">Edit <i class="icon-edit"></i></a>
+                    <a onclick=" return confirmDelete()" class="text-danger ml-4" href="{% url 'delete_address' main_address.id %}">Delete <i class="icon-edit text-danger "></i></a></p>
+                    {% else %}
+                    <p>Curretly no address to show</p><br>
+                    <a href="{% url 'add_address' 1 %}">Add Address<i class="icon-edit"></i></a></p>
+                    {% endif %}
+                    
+                </div><!-- End .card-body -->
+            </div><!-- End .card-dashboard -->
+        </div><!-- End .col-lg-6 -->
+
+        <div class="col-lg-6">
+           
+            <div class="card card-dashboard">
+                
+                <div class="card-body"> 
+                    <h3 class="card-title"> Address 2</h3><!-- End .card-title -->
+                     {% if related_address %}
+                     <p>{{ related_address.fullname }}<br>
+                         {{ related_address.address1 }}<br>
+                         {{ related_address.city }}<br>
+                         {{related_address.state }}<br>
+                         {{ related_address.postalcode }}<br>
+                         {{ related_address.country }}<br></p>
+                    <a href="{% url 'edit_address' related_address.id %}">Edit <i class="icon-edit"></i></a>
+                    <a onclick="return confirmDelete()" class="text-danger ml-4" href="{% url 'delete_address' related_address.id %}">Delete <i class="icon-edit text-danger "></i></a></p>
+                    {% else %}
+                    <a href="{% url 'add_address' 0 %}">Add another address <i class="icon-edit"></i></a>
+                    {% endif %}
+                   
+
+                    
+                </div><!-- End .card-body -->
+            </div><!-- End .card-dashboard -->
+        </div><!-- End .col-lg-6 -->
+    </div><!-- End .row -->
+</div>
+
+{% endblock %}

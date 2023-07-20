@@ -1,0 +1,30 @@
+{% extends 'accounts/profile/profileBase.html' %}
+{% load static %}
+{% block profile %}
+        <div class="col-md-8">
+            <form action="{% url 'user_profile' %}" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label> Username *</label>
+                        <input type="text" class="form-control" value="{{user.username}}"  placeholder="{{user.username}}"  name="name" required>
+
+                       
+                   <label>Email address *</label>
+                   <input type="email" class="form-control" value="{{user.email}}" placeholder="{{user.email}}" name="email" required>
+
+                   <label>Phone no.</label>
+                  <input type="text" name="phone" placeholder="{{user.phone}}" value="{{ user.phone }}" class="form-control">
+
+
+                <button type="submit" class="btn btn-outline-primary-2 py-3">
+                    <span>SAVE CHANGES</span>
+                    <i class="icon-long-arrow-right"></i>
+                </button>
+               
+                    </div><!-- End .col-sm-6 -->           
+            </form>
+            <div class="py-3"> <a href="{% url 'change_password' %}" > Change password? </a></div>
+        </div><!-- .End .tab-pane -->
+  
+{% endblock %}

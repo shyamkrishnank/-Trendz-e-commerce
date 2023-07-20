@@ -32,11 +32,12 @@
                         <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label>
                     </form>
                 </div><!-- End .checkout-discount -->
-                <form action="#">
+                <form  method="POST" action="{% url 'order' %}">
+                    {% csrf_token %}
                     <div class="row">
                         <div class="col-lg-7">
                            
-                                <div class="row" class="'col-sm-6" >
+                                <div class="row" class="'col-sm-7" >
                                     <div class="card card-dashboard">
                                             <div class="card-body">
                                                 <h3 class="card-title">Home Address</h3><!-- End .card-title -->
@@ -49,7 +50,7 @@
                                                     {{ main_address.country }}<br>
 
                                                     <label class='text-danger'><span>Delever Here</span>  </label>
-                                                    <input type="radio" name="address_radio" value="main_address.id" checked>
+                                                    <input type="radio" name="address_radio" value="{{main_address.id}}" checked>
                                                 {% else %}
                                                 <p>Curretly no address to delever</p><br>
                                                 <a href="{% url 'add_address' 1 %}">Add Address<i class="icon-edit"></i></a></p>
@@ -67,7 +68,7 @@
                                                      {{ related_address.city }}<br>
                                                      {{ related_address.postalcode }}<br>
                                                      <label class='text-danger'><span>Delever Here</span>  </label>
-                                                    <input type="radio" name="address_radio" value="related_address.id" ><br>
+                                                    <input type="radio" name="address_radio" value="{{related_address.id}}" ><br>
                                                 {% endfor %}
                                                 {% endif %}
                                                
@@ -81,12 +82,12 @@
                                   
                                 </div><!-- End .row -->
 
-                                <div class="row" class="col-sm-6">
+                                <div class="row" class="col-sm-7">
                                 
                                    
                                 </div><!-- End .row -->
 
-                                <div class="row col-sm-6" >
+                                <div class="row col-sm-7" >
                                     
 
                                 </div><!-- End .row -->

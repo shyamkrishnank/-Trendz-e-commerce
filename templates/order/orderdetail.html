@@ -1,0 +1,55 @@
+{% extends 'accountsBase.html' %}
+{% block contant %}
+<main class="container d-flex ">
+    <div class="card-body pl-5 pt-3">
+        <h3 class="card-title">Delivering Address</h3><!-- End .card-title -->
+           
+        <p><a>{{ order.user.username }}</a><br>
+           {{ order.address.address1 }}
+           {{ order.address.city }}
+           {{order.address.postalcode}}-
+           {{order.address.state}}
+            </p> 
+    </div><!-- End .card-body -->
+
+    <table class="table table-cart table-mobile row w-100 ">
+        <tbody> 
+            {% for items in order.orderitems.all  %}  
+            <a href="#">                
+            <tr>
+            
+            <td class="product-col">
+                    <div class="product">
+                         <figure class="product-media">
+                            <a href="#">
+                             <img src="{{ items.products.images.first.image.url }}" alt="Product image">
+                            </a>
+                        </figure>
+                         <div class="card border-primary mb-3" style="max-width: 18rem;">
+                            <div class="card-header">{{ items.products.name }}</div>
+                            <div class="card-body text-primary">
+                              <p class="card-text"> Quantity :- {{ items.quantity }} </p>
+                            </div></td>
+                         <td class="quantity-col w-10 ">
+                            <p class="text-success">{{ items.order_status }}</p>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success " role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 10%"></div>
+                              </div>       
+                        </td>
+                <td class="product_col" ><div class="mx-5">Order.id : {{ order.order_num }}</div>
+                    </td>
+
+                </td>
+                <td class="product_col" ><div class="mx-5 text-danger">Cancel Order?</div>
+                    </td>
+
+                
+            </tr>
+            </a>
+            {% endfor %}    
+        </tbody>
+    </table><!-- End .table table-wishlist -->
+    
+
+</main>
+{% endblock %}

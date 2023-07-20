@@ -1,0 +1,60 @@
+{% extends 'accountsBase.html' %}
+{% block contant %}
+
+<main class="main">
+    <div class="page-header text-center" >
+        <div class="container">
+            <h1 class="page-title">My {{name}}</h1>
+        </div><!-- End .container -->
+    </div><!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+        <div class="container">
+            <ol class="breadcrumb">
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <div class="page-content">
+        <div class="dashboard">
+            <div class="container">
+                <div class="row">
+                    <aside class="col-md-4 ">
+                        <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link "  href="{% url 'user_profile' %}"   aria-selected="true">Account Details</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"   href="{% url 'orderpage' %}" aria-selected="false">Orders</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link "  href="{% url 'address' %}" aria-selected="false">Adresses</a>
+                            </li>
+                           
+                            <li class="nav-item">
+                                <a class="nav-link " onclick="return confirmlogout()"  href="{% url 'user_logout' %}">Sign Out</a>
+                            </li>
+                        </ul>
+                    </aside><!-- End .col-lg-3 -->
+                    
+                    {% block profile %}
+
+                    {% endblock %}
+                
+                 
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+        </div><!-- End .dashboard -->
+    </div><!-- End .page-content -->
+</main><!-- End .main -->
+
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this address?");
+    }
+    function confirmlogout(){
+        return confirm('Are you sure you want to logout')
+    }
+    </script>
+
+
+{% endblock %}

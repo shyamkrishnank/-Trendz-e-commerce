@@ -18,7 +18,7 @@ def cart(request):
     except:
          user_cart = None
          cart1 = None 
-    return render(request,'cart/cart.html',{'cart':cart1,'main_cart':user_cart,'user_exists':user.username})
+    return render(request,'cart/cart.html',{'cart':cart1,'main_cart':user_cart,'user_exists':user.username,})
 
 
 
@@ -61,9 +61,9 @@ def checkout(request):
         try:
             main_address = Address.objects.get(Q(user = user) & Q(current = True) )   
         except:
-           pass
+           main_address = None
     except:
-        pass
+        related_address - None
     cart = Cart.objects.get(user = user)
     cartitems = cart.cartitems.all() 
     return render(request, 'cart/checkout.html',{'main_address':main_address,'related_address':related_address,'cart':cart,'cartitems':cartitems})
@@ -93,7 +93,7 @@ def add_checkout_address(request):
             current = False
         add = Address.objects.create(user = user.c_user,fullname = name, address1 = address,state = state, city = city,country = country, postalcode = postalcode,current = current )
         add.save()
-        return render('checkout')
+        return redirect('checkout')
     return render(request,'cart/add_address.html')
 
     

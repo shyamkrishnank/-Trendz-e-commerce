@@ -1,0 +1,43 @@
+{% extends 'accounts/profile/profileBase.html' %}
+{% block profile %}
+<div class="col-md-8 ">
+    {% if order %}
+     <table class="table table-cart table-mobile">
+        
+        <tbody> 
+            {% for i in order %}
+            {% for items in i.orderitems.all  %}  
+                            
+            <tr>
+            <td class="product-col">
+                    <div class="product">
+                         <figure class="product-media">
+                             <img src="{{ items.products.images.first.image.url }}" alt="Product image">
+    
+                        </figure>
+                            <h3 class="product-title">
+                              <a href="{% url 'orderdetails' i.id %}" >{{ items.products.name }} </a>
+                             </h3><!-- End .product-title -->
+                             </div><!-- End .product -->
+                         </td>
+                         <td class="price-col">Rs.{{items.products.price}}</td>
+                         <td class="quantity-col">
+                          <div class="cart-product-quantity">
+                            <h2 class="product-title"><a>{{items.order_status}}</a></h2>
+                            </div>     
+                </td>
+            </a>         
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table><!-- End .table table-wishlist -->
+                        
+    {% else %}
+    <p>No order has been made yet.</p>
+    <a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+ </div><!-- .End .tab-pane --- -->
+    {% endif %}
+
+
+{% endblock %}
