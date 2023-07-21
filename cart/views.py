@@ -66,7 +66,7 @@ def checkout(request):
         related_address - None
     cart = Cart.objects.get(user = user)
     cartitems = cart.cartitems.all() 
-    return render(request, 'cart/checkout.html',{'main_address':main_address,'related_address':related_address,'cart':cart,'cartitems':cartitems})
+    return render(request, 'cart/checkout.html',{'main_address':main_address,'related_address':related_address,'cart':cart,'cartitems':cartitems,'user_exists':user.username})
 
 def add_checkout_address(request):
     user_exists = None
@@ -94,6 +94,6 @@ def add_checkout_address(request):
         add = Address.objects.create(user = user.c_user,fullname = name, address1 = address,state = state, city = city,country = country, postalcode = postalcode,current = current )
         add.save()
         return redirect('checkout')
-    return render(request,'cart/add_address.html')
+    return render(request,'cart/add_address.html',{'user_exists':user_exists})
 
     

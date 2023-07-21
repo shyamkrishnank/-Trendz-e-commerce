@@ -133,9 +133,16 @@
                 </div><!-- End .header-search -->
 
                 <div class="dropdown cart-dropdown">
+                    {% if user_exists %}
                     <a href="{% url 'cart' %}" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" data-display="static">
-                        <i class="icon-shopping-cart"></i>
+                        <i class="icon-shopping-cart"></i>  
                     </a>
+                    {% else %}
+                    <a href="" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false"  data-display="static" onclick="return confirm('You have to login to have a cart!')">
+                        <i class="icon-shopping-cart"></i>  
+                    </a>
+                    {% endif %}
+
                 </div><!-- End .cart-dropdown -->
             </div><!-- End .header-right -->
         </div><!-- End .container -->

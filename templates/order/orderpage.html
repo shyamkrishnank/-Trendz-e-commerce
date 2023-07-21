@@ -2,14 +2,14 @@
 {% block profile %}
 <div class="col-md-8 ">
     {% if order %}
-     <table class="table table-cart table-mobile">
-        
+    {% for i in order %}
+    order id - {{ i.order_num }} 
+    <div class="card border ">
+     <table class="table table table-fixed"> 
         <tbody> 
-            {% for i in order %}
-            {% for items in i.orderitems.all  %}  
-                            
+            {% for items in i.orderitems.all  %}                   
             <tr>
-            <td class="product-col">
+            <td class="product-col col-md-5">
                     <div class="product">
                          <figure class="product-media">
                              <img src="{{ items.products.images.first.image.url }}" alt="Product image">
@@ -20,22 +20,27 @@
                              </h3><!-- End .product-title -->
                              </div><!-- End .product -->
                          </td>
-                         <td class="price-col">Rs.{{items.products.price}}</td>
-                         <td class="quantity-col">
+                         <td class="price-col col">Rs.{{items.products.price}}</td>
+                         <td class="quantity-col ">
                           <div class="cart-product-quantity">
-                            <h2 class="product-title"><a>{{items.order_status}}</a></h2>
+                            {% if items.order_status == 'Order Cancelled' %}
+                            <h2 class="product-title"><a class="text-danger">{{items.order_status}}</a></h2>
+                            {% else %}
+                            <h2 class="product-title"><a class="text-success">{{items.order_status}}</a></h2>
+                            {% endif %}
                             </div>     
                 </td>
             </a>         
             </tr>
             {% endfor %}
-            {% endfor %}
+            
         </tbody>
-    </table><!-- End .table table-wishlist -->
-                        
+    </table><br>
+    </div>
+    {% endfor %}                   
     {% else %}
     <p>No order has been made yet.</p>
-    <a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+    <a href="{% url 'home' %}" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
  </div><!-- .End .tab-pane --- -->
     {% endif %}
 

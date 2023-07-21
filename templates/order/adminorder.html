@@ -1,0 +1,28 @@
+{% extends 'adminBase.html' %}
+{% block order_active %} active {%  endblock %}
+{% block contant %}
+
+<table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">No.</th>
+        <th scope="col">Order id</th>
+        <th scope="col">Date of order</th>
+        <th scope="col">user</th>
+        <th scope="col" ></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for item in order %}
+      <tr>
+        <th scope="row">{{ forloop_counter }}</th>
+        <td>{{ item.order_num }}</td>
+        <td>{{ item.date_created }}</td>
+        <td>{{ item.user.username }}</td>
+        <td><a href="{% url 'adminorderdetails' item.id %}" >View Details</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}

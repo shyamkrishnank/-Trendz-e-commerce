@@ -1,0 +1,137 @@
+{% extends 'adminBase.html' %}
+{% block order_active %} active {%  endblock %}
+{% block contant %}
+
+<div class="page-header">
+    <h3 class="page-title">Order details</h3>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'adminorder' %}" class="btn btn-success">Back</a></li>
+        </ol>
+      </nav>
+</div>
+<div class="row" style="justify-content: center;">
+    <div class="col-10 grid-margin">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="form-sample">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Order No.</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="invisibleInputBox" value="{{order.order_num}}" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Date</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="invisibleInputBox" value="{{order.date_created}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Customer Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="invisibleInputBox" value="{{order.user.username}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Payment Method</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="invisibleInputBox" value="Cash On Delevery">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Address</label>
+                                <div class="col-sm-9">
+                                    <p>
+                                        {{order.address.address1}},<br>
+                                        {{order.address.city}}, {{order.address.state}},<br>
+                                        {{order.address.postalcode}}, {{order.address.country}}<br>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Order Amount</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="invisibleInputBox" placeholder="{{order.total_price}}" value="{{order.total_price}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  
+                </div>
+
+            </div>
+        </div>
+    </div>
+        <div style="padding: 1px;margin-bottom: 4px;"></div>
+        <div  class="container "></div>
+        <div class="table-responsive" style="background-color: #191c24;padding: 40px;">
+            <h6>Products</h6>
+            <table class="table ">
+                <thead>
+                <tr>
+                    <th >Name</th> 
+                    <th >Quantity</th>
+                    <th >Unit Price</th>
+                    <th >Total Amount</th>
+                    <th >Order Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in order.orderitems.all %}
+                <tr>
+                    <td class="text-white ">{{ item.products.name }}</td>
+                    <td class="text-white ">{{item.quantity}}</td>
+                    <td class="text-white ">Rs.{{item.products.price}}</td>
+                    <td class="text-white ">Rs.{{item.total_price}}</td>
+                    <td class="col" >
+                        <form method = 'post' action="{% url 'statuschange' item.id %}" >
+                            {% csrf_token %}
+                        <div class="form-row align-items-center">
+                          <div class="col-md-12 my-1">
+                            <select class="custom-select mr-sm-2" name="orderstatus">
+                                {% for status in choices %}
+                                <option value="{{ status.1 }}" {% if item.order_status == status.1 %}selected{% endif %}>{{ status.1 }}</option>
+                                {% endfor %}
+                            </select>
+                          </div>
+                          <div class="col-auto my-1">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                          </div>
+                        </div>
+                      </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+
+  
+
+
+
+
+{% endblock %}

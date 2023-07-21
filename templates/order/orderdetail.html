@@ -10,14 +10,14 @@
            {{order.address.postalcode}}-
            {{order.address.state}}
             </p> 
+            <p class="pt-2"><span class="text-success">Date of order:</span>{{ order.date_created.date }}</p>
     </div><!-- End .card-body -->
+  
 
     <table class="table table-cart table-mobile row w-100 ">
         <tbody> 
-            {% for items in order.orderitems.all  %}  
-            <a href="#">                
+            {% for items in order.orderitems.all  %}                 
             <tr>
-            
             <td class="product-col">
                     <div class="product">
                          <figure class="product-media">
@@ -28,28 +28,116 @@
                          <div class="card border-primary mb-3" style="max-width: 18rem;">
                             <div class="card-header">{{ items.products.name }}</div>
                             <div class="card-body text-primary">
-                              <p class="card-text"> Quantity :- {{ items.quantity }} </p>
+                              <p class="card-text"> Quantity :- {{ items.quantity }} </p><br>
+                              <p class="card-text"> Total :- {{ items.total_price }}   </p>
                             </div></td>
+            {% if items.order_status == 'Order Confirmed' %}
                          <td class="quantity-col w-10 ">
                             <p class="text-success">{{ items.order_status }}</p>
                             <div class="progress">
                                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-success " role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 10%"></div>
-                              </div>       
+                            </div>       
                         </td>
-                <td class="product_col" ><div class="mx-5">Order.id : {{ order.order_num }}</div>
-                    </td>
-
-                </td>
-                <td class="product_col" ><div class="mx-5 text-danger">Cancel Order?</div>
-                    </td>
-
+                        <td class="product_col" ><div class="mx-5">Order.id : {{ order.order_num }}</div>
+                        </td>
+                        <td class="product_col" ><div class="mx-5 text-danger"><a href="{% url 'cancel_order' items.id %}" onclick="return confirm('Are you sure you want to cancel order?')" >Cancel Order?</a></div>
+                        </td>    
+                   </tr>
+    
+                    
+            {% elif items.order_status == 'Order Cancelled' %}
+                        <td class="quantity-col w-10 ">
+                            <p class="text-danger">{{ items.order_status }}</p>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success " role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                            </div>       
+                        </td>
+                        <td class="product_col" ><div class="mx-5">Order.id : {{ order.order_num }}</div>
+                        </td>
+    
+                    
+            {% elif items.order_status == 'Order Shipped' %}
+                        <td class="quantity-col w-10 ">
+                            <p class="text-success">{{ items.order_status }}</p>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success " role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 50%"></div>
+                            </div>       
+                        </td>
+                        <td class="product_col" ><div class="mx-5">Order.id : {{ order.order_num }}</div>
+                        </td>
+    
+                    
+            {% elif items.order_status == 'Order Pending' %}
+                        <td class="quantity-col w-10 ">
+                            <p class="text-success">{{ items.order_status }}</p>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success " role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 50%"></div>
+                            </div>       
+                        </td>
+                        <td class="product_col" ><div class="mx-5">Order.id : {{ order.order_num }}</div>
+                        </td>
+                        <td class="product_col" ><div class="mx-5 text-danger"><a href="{% url 'cancel_order' items.id %}" onclick="return confirm('Are you sure you want to cancel order?')" >Cancel Order?</a></div>
+                        </td>    
+                   </tr>
+    
+                    
+            {% elif items.order_status == 'Order Delivered' %}
+                        <td class="quantity-col w-10 ">
+                            <p class="text-success">{{ items.order_status }}</p>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success " role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                            </div>       
+                        </td>
+                        <td class="product_col" ><div class="mx-5">Order.id : {{ order.order_num }}</div>
+                        </td>
+                        <td class="product_col" ><div class="mx-5 text-danger"><a>Return Product</a></div>
+                        </td>
+    
+                    
+            {% elif items.order_status == 'Order Out of Delivery' %}
+                        <td class="quantity-col w-10 ">
+                            <p class="text-success">{{ items.order_status }}</p>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success " role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 90%"></div>
+                            </div>       
+                        </td>
+                        <td class="product_col" ><div class="mx-5">Order.id : {{ order.order_num }}</div>
+                        </td>
+    
+                    
+            {% elif items.order_status == 'Order Returned' %}
+                        <td class="quantity-col w-10 ">
+                            <p class="text-success">{{ items.order_status }}</p>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success " role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                            </div>       
+                        </td>
+                        <td class="product_col" ><div class="mx-5">Order.id : {{ order.order_num }}</div>
+                        </td>
+    
                 
-            </tr>
-            </a>
+            {% else %}
+            <td class="quantity-col w-10 ">
+                <p class="text-success">{{ items.order_status }}</p>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success " role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 10%"></div>
+                </div>       
+            </td>
+            <td class="product_col" ><div class="mx-5">Order.id : {{ order.order_num }}</div>
+            </td>
+        
+            {% endif %}
+
+          
             {% endfor %}    
         </tbody>
     </table><!-- End .table table-wishlist -->
     
 
 </main>
+
+
+
+
+
 {% endblock %}
