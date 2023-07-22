@@ -53,7 +53,7 @@
                                                     <input type="radio" name="address_radio" value="{{main_address.id}}" checked>
                                                 {% else %}
                                                 <p>Curretly no address to delever</p><br>
-                                                <a href="{% url 'add_address' 1 %}">Add Address for the profile<i class="icon-edit"></i></a></p>
+                                                <a href="{% url 'user_profile' %}">Add Address for the profile<i class="icon-edit"></i></a></p>
                                                 {% endif %}
                                                 
                                             </div><!-- End .card-body -->
@@ -102,6 +102,7 @@
 
                         </div><!-- End .col-lg-9 -->
                         {% endif %}
+                        {% if main_address %}
                         <aside class="col-lg-5">
                             <div class="summary">
                                 <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
@@ -216,6 +217,7 @@
                                 </button>
                             </div><!-- End .summary -->
                         </aside><!-- End .col-lg-3 -->
+                        {% endif %}
                     </div><!-- End .row -->
                 </form>
             </div><!-- End .container -->

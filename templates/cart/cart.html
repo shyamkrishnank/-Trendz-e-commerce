@@ -66,7 +66,7 @@
 
                                         <div class="cart-product-quantity">
                                             <a href="{% url 'quantity_decrement' items.id  %}" class="minus-btn" >-</a>
-                                            <input  id="quantity-input" class="quantity-input" value="{{ items.quantity }}" min="1" max="10" >
+                                            <input  id="quantity-input" class="quantity-input" value="{{ items.quantity }}" min="1" max="10" disabled >
                                             <a href="{% url 'quantity_increment' items.id %}" class="plus-btn" >+</a>
                                       </div>     
                                     </td>

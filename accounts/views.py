@@ -101,6 +101,7 @@ def otp_validate(request):
         if user_detail['otp'] == enter_otp:
              in_user = User.objects.create_user(username = user_detail['username'],password = user_detail['password'])
              user = Users.objects.create(user=in_user,username = user_detail['username'],email = user_detail['email'],phone = user_detail['phone'])
+             user.save()
              request.session.flush()
              return redirect('user_login') 
         else:
@@ -191,7 +192,6 @@ def address(request):
     return render(request,'accounts/profile/address.html',{'user_exists':user.username,'main_address':main_address,'related_address':related_address,'name':'Address'})
 
 def add_address(request,check):
-    user_exists = None
     if 'user_exists' in request.session:
         user_exists = request.session['user_exists']
     if request.method == 'POST':

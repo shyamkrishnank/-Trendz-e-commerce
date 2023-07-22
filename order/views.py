@@ -4,7 +4,7 @@ from .models import Order,OrderDetail
 from cart.models import Cart,CartItems
 
 def adminOrders(request):
-    order = Order.objects.all()
+    order = Order.objects.all().order_by('-date_created')
     return render(request,'order/adminorder.html',{'order':order})
 
 def adminOrderDetail(request,id):
@@ -20,6 +20,7 @@ def status_change(request,id):
         order.save()
         return redirect('adminorderdetails',order.order.id)
     return redirect('adminorderdetails',order.order.id)
+
 def order(request):
     user = Users.objects.get(username = request.session['user_exists'])
     if request.method == 'POST':
@@ -30,7 +31,10 @@ def order(request):
         cart = Cart.objects.get(user = user)
         cartitems = cart.cartitems.all()
         for items in cartitems:
-            OrderDetail.objects.create(order = order,products= items.products,quantity = items.quantity) 
+            OrderDetail.objects.create(order = order,products = items.products,quantity = items.quantity) 
+            items.products.stocks -= items.quantity
+            items.products.save()
+            
     cart.delete()   
     return redirect('ordersuccess',order.order_num)
 
@@ -54,4 +58,4 @@ def order_cancel(request,id):
     order.order_status = 'Order Cancelled'
     order.save()
     return redirect('orderdetails',main_id)
-    
+

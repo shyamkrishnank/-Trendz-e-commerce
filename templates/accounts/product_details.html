@@ -1,6 +1,17 @@
 {% extends 'accountsBase.html' %}
 {% block contant %}
 {% load static %}
+<style>
+    /* styles.css */
+#message {
+  background-color: #4caf50; /* Green background color */
+  color: white; /* White text color */
+  padding: 10px; /* Add some padding */
+  text-align: center; /* Center the text */
+  display: none; /* Initially hide the message */
+}
+
+</style>
 
 <main class="main">
     <!--                        breadcrumb-nav-->
@@ -137,7 +148,20 @@
     
                                             <div class="details-action-wrapper">
                                                 <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
-                                                <a href="{% url 'add_cart' main_product.id %}" class="btn-product icon-shopping-cart btn-cart-wishlist" title="Cart"><span>Add to Cart</span></a>
+                                                <a href="{% url 'add_cart1' main_product.id %}" onclick="checkLogin()"  class="btn-product icon-shopping-cart btn-cart-wishlist" title="Cart"><span>Add to Cart</span></a>
+                                                <script>
+                                                    function checkLogin() {
+                                                        // Simulate a user not logged in (replace this with your actual login check)
+                                                        const userLoggedIn = false;
+                                            
+                                                        if (!userLoggedIn) {
+                                                            alert("Succesfully added to the cart!");
+                                                        } else {
+                                                            // Code to add the item to the cart when the user is logged in
+                                                            // ...
+                                                        }
+                                                    }
+                                                </script>
                                             </div><!-- End .details-action-wrapper -->
                                         </div><!-- End .product-details-action -->
     
@@ -350,7 +374,8 @@
                     </div><!-- End .container -->
                 </div><!-- End .page-content -->
         </main>
-
+    </body>
+    </html>
    
 
 

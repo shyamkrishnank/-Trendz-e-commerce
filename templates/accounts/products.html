@@ -50,7 +50,20 @@
 
                         <div class="product-action">
                             {% if user_exists %}
-                            <a href="{% url 'add_cart' i.id %}" class="btn-product btn-cart"><span>add to cart</span></a>
+                            <a href="{% url 'add_cart' i.id %}"  onclick="checkLogin()" class="btn-product btn-cart"><span>add to cart</span></a>
+                            <script>
+                                function checkLogin() {
+                                    // Simulate a user not logged in (replace this with your actual login check)
+                                    const userLoggedIn = false;
+                        
+                                    if (!userLoggedIn) {
+                                        alert("Succesfully added to the cart!");
+                                    } else {
+                                        // Code to add the item to the cart when the user is logged in
+                                        // ...
+                                    }
+                                }
+                            </script>
                             {% else %}
                             <a href="" class="btn-product btn-cart" onclick="return confirm('You have to login to have a cart!')" ><span>add to cart</span></a>
                             {% endif %}

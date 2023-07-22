@@ -25,15 +25,30 @@ def cart(request):
 def add_cart(request,id):
     user = Users.objects.get(username = request.session['user_exists'] )
     try:
-     cart = Cart.objects.get(user = user )
-     if CartItems.objects.filter(cart = cart,products = Products.objects.get(id = id)).exists():
-        return redirect('cart')
+        cart = Cart.objects.get(user = user )
+        if CartItems.objects.filter(cart = cart,products = Products.objects.get(id = id)).exists():
+            id = Products.objects.get(id=id).category.id
+            return redirect('products',id)
     except:
         cart = Cart.objects.create(user = user)
         cart.save()
     cart_item = CartItems.objects.create(cart = cart,products = Products.objects.get(id = id),quantity = 1)
     cart_item.save()
-    return redirect('cart')
+    id = Products.objects.get(id=id).category.id
+    return redirect('products',id)
+
+def add_cart1(request,id):
+    user = Users.objects.get(username = request.session['user_exists'] )
+    try:
+        cart = Cart.objects.get(user = user )
+        if CartItems.objects.filter(cart = cart,products = Products.objects.get(id = id)).exists():
+            return redirect('product_detail',id)
+    except:
+        cart = Cart.objects.create(user = user)
+        cart.save()
+    cart_item = CartItems.objects.create(cart = cart,products = Products.objects.get(id = id),quantity = 1)
+    cart_item.save()
+    return redirect('product_detail', id)
 
 def remove_cartitem(request,id):
     cartitem = CartItems.objects.get(id = id)
@@ -42,6 +57,8 @@ def remove_cartitem(request,id):
 
 def quantity_increment(request,id):
     cartitems = CartItems.objects.get(id = id)
+    if cartitems.quantity == 6:
+        return redirect('cart')
     cartitems.quantity += 1
     cartitems.save()
     return redirect ('cart')
@@ -95,5 +112,8 @@ def add_checkout_address(request):
         add.save()
         return redirect('checkout')
     return render(request,'cart/add_address.html',{'user_exists':user_exists})
+
+
+
 
     
