@@ -46,15 +46,16 @@
                 <label for="categoryName">Product Discription:</label><br>
                 <input type="text" id="categoryName" name="discription"   required> <br>
 
-                <label for="categoryName">Category</label><br>
-                     <select id="inputField" name="id">
-                      {% for j in category %}
-                        <option value="{{j.id}}">{{ j.name }}</option>
-                      {% endfor %}
-                    </select><br>
                     
-                <label for="categoryImage">Product Image:</label><br>
+                <label for="categoryImage">Product Image:1</label><br>
                 <input type="file" id="categoryImage" name="images"  accept="image/*" multiple required><br>
+
+                <label for="categoryImage">Product Image:2</label><br>
+                <input type="file" id="categoryImage" name="images"  accept="image/*" multiple required><br>
+
+                <label for="categoryImage">Product Image:3</label><br>
+                <input type="file" id="categoryImage" name="images"  accept="image/*" multiple required><br>
+                
         
         </div>
         <div class="modal-footer">
