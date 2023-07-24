@@ -12,8 +12,6 @@ from products.models import Products,ProductImage
 # -----------------------------------------------------home----------
 def home(request):
     category = Category.objects.all()
-    if 'user_exists' in request.session:
-        return render(request,'accounts/home.html',{'category':category,'user_exists':request.session['user_exists']})
     return render(request,'accounts/home.html',{'category':category})
 
 # ---------------------------------------------------------signup/login------
@@ -106,29 +104,26 @@ def otp_validate(request):
              return redirect('user_login') 
         else:
             message = 'Wrong OTP entered!'
-            return render(request,'accounts/otp.html',{'message':message,'user_exists':request.session['user_exists']})
+            return render(request,'accounts/otp.html',{'message':message})
     return render(request,'accounts/otp.html')
 
 # ----------------------------------------------------products/products details--------------
 
+def shop(request):
+    products = Products.objects.all()
+    
 
 def products(request,id):
-    user_exists = None
-    if 'user_exists' in request.session:
-        user_exists = request.session['user_exists']
     category = Category.objects.all()
     products = Products.objects.filter(category = Category.objects.get(id = id))
     count = products.count()
-    return render(request,'accounts/products.html',{'products':products,'count':count,'category':category,'user_exists':user_exists})
+    return render(request,'accounts/products.html',{'products':products,'count':count,'category':category})
 
 def product_detail(request,id):
-    user_exists = None
-    if 'user_exists' in request.session:
-        user_exists = request.session['user_exists']
     category = Category.objects.all()
     main_product = Products.objects.get(id = id)
     related_products = Products.objects.exclude(id = id )
-    return render(request,'accounts/product_details.html',{'main_product':main_product,'related_products':related_products,'category':category,'user_exists':user_exists})
+    return render(request,'accounts/product_details.html',{'main_product':main_product,'related_products':related_products,'category':category})
 
 # ------------------------------------------------------userprofile --------------------
 
@@ -143,7 +138,7 @@ def user_profile(request):
         user.user.save()
         user.save()
         return redirect('user_profile')
-    return render(request,'accounts/profile/accountdetails.html',{'user':user,'user_exists':user.username,'name':'Account'})
+    return render(request,'accounts/profile/accountdetails.html',{'user':user,'name':'Account'})
 
 def change_password(request):
         user_exists = None
@@ -155,7 +150,7 @@ def change_password(request):
         print("---------------------------------------")
         print(otp)
         print("---------------------------------------")
-        return render(request,'accounts/passotp.html',{'user_exists':user_exists})
+        return render(request,'accounts/passotp.html')
 
 def otp_validater(request):
         if request.method == 'POST':
@@ -171,11 +166,8 @@ def passwordsetter(request):
              user.set_password(request.POST.get('password'))
              user.save()
              return redirect('user_profile')
-        return render(request,'accounts/changepassword.html',{'message':'Enter the correct password!','user_exists':user.username})
-    user_exists = None
-    if 'user_exists' in request.session:
-        user_exists = request.session['user_exists']
-    return render(request,'accounts/changepassword.html',{'user_exists':user_exists})
+        return render(request,'accounts/changepassword.html',{'message':'Enter the correct password!'})
+    return render(request,'accounts/changepassword.html')
 
 def address(request):
     main_address = None

@@ -146,8 +146,8 @@
     </div><!-- End .page-content -->
 </main><!-- End .main -->
 {% else %}
-             <div style="width: 100%; height: 30vh; display:flex; justify-content: center;align-items: center; " ><p>No items on cart to display</p><br>
-                <a href="{% url 'home' %}" class="btn btn-outline-primary-2"><span>SHOP NOW</span><i class="icon-long-arrow-right"></i></a>
+             <div style="width: 100%; height: 30vh; display:flex; justify-content: center;align-items: center ; " ><p>No items on cart to display</p><br>
+               <div class="ml-3" ><a href="{% url 'home' %}" class="btn btn-outline-primary-2"><span>SHOP NOW</span><i class="icon-long-arrow-right"></i></a></div> 
             </div>
                                
                             {% endif %}

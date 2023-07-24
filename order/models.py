@@ -15,7 +15,6 @@ class Order(models.Model):
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now=True)
     order_num = models.CharField(max_length=20, default=generate_order_id) 
-     
 
     @property
     def total_price(self):
