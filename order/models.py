@@ -5,6 +5,11 @@ from accounts.models import Users,Address
 from products.models import Products
 
 class Order(models.Model):
+    PAYMENT_CHOICES = (
+        ('debit_credit_card','DEBIT/CREDIT CARD'),
+        ('cash_on_delivery','CASH ON DELIVERY'),
+        ('online_payment','ONLINE PAYMENT')
+    )
  
 
     def generate_order_id():
@@ -15,6 +20,8 @@ class Order(models.Model):
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now=True)
     order_num = models.CharField(max_length=20, default=generate_order_id) 
+    payment_type = models.CharField(max_length=100,choices=PAYMENT_CHOICES,default="CASH ON DELIVERY")
+    
 
     @property
     def total_price(self):
@@ -39,6 +46,7 @@ class OrderDetail(models.Model):
     products = models.ForeignKey(Products, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     order_status = models.CharField(max_length=50,choices=order_choices,default='Order Confirmed')
+    date_delivered = models.DateTimeField(null=True, blank=True, default=None)
 
     @property
     def total_price(self):

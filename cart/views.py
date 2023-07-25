@@ -3,6 +3,8 @@ from .models import *
 from django.db.models import Q
 from accounts.models import Users,Address
 from django.contrib.auth.models import User
+import razorpay
+from django.conf import settings
 
 
 # Create your views here.
@@ -82,8 +84,11 @@ def checkout(request):
     except:
         related_address - None
     cart = Cart.objects.get(user = user)
+    client = razorpay.Client(auth=(settings.RAZOR_KEY, settings.KEY_SECRET))
+    payment = client.order.create({'amount': cart.total_price*100,'currency':'INR', 'payment_capture':1})
     cartitems = cart.cartitems.all() 
-    return render(request, 'cart/checkout.html',{'main_address':main_address,'related_address':related_address,'cart':cart,'cartitems':cartitems,'user_exists':user.username})
+    return render(request, 'cart/checkout.html',{'main_address':main_address,'related_address':related_address,'cart':cart,'cartitems':cartitems,'payment':payment})
+
 
 def add_checkout_address(request):
     user_exists = None

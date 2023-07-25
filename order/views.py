@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect
 from accounts.models import Users,Address
 from .models import Order,OrderDetail
-from cart.models import Cart,CartItems
+from cart.models import Cart
+from django.utils import timezone
 
 def adminOrders(request):
     order = Order.objects.all().order_by('-date_created')
@@ -16,6 +17,8 @@ def status_change(request,id):
     if request.method == 'POST':
         status = request.POST.get('orderstatus')
         order = OrderDetail.objects.get(id = id)
+        if status == 'Order Delivered':
+            order.date_delivered = timezone.now()
         order.order_status = status
         order.save()
         return redirect('adminorderdetails',order.order.id)
@@ -27,17 +30,24 @@ def order(request):
         user = user
         address = Address.objects.get(id = request.POST.get('address_radio'))
         order = Order.objects.create(user = user,address = address)
+        payment = request.POST.get('payment_method')
+        print(payment)
+        if payment == 'card':
+            order.payment_type ='DEBIT/CREDIT CARD'
+        elif payment == 'onlinepayment':
+            order.payment_type = 'ONLINE PAYMENT'
+        else:
+            pass
         order.save()
         cart = Cart.objects.get(user = user)
         cartitems = cart.cartitems.all()
         for items in cartitems:
             OrderDetail.objects.create(order = order,products = items.products,quantity = items.quantity) 
             items.products.stocks -= items.quantity
-            items.products.save()
-            
-    cart.delete()   
-    return redirect('ordersuccess',order.order_num)
-
+            items.products.save()      
+        cart.delete()   
+        return redirect('ordersuccess',order.order_num)   
+        
 def ordersuccess(request,id):
     user = request.session['user_exists']
     return render(request,'order/ordersuccess.html',{'order_id':id,'user_exists':user})

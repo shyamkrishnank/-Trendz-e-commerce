@@ -3,7 +3,7 @@
 <div class="col-md-8 ">
     {% if order %}
     {% for i in order %}
-    order id - {{ i.order_num }} 
+    Order id - {{ i.order_num }} 
     <div class="card border ">
      <table class="table table table-fixed"> 
         <tbody> 
@@ -11,7 +11,7 @@
             <tr>
             <td class="product-col col-md-5">
                     <div class="product">
-                         <figure class="product-media">
+                         <figure class="product-media ml-3 ">
                              <img src="{{ items.products.images.first.image.url }}" alt="Product image">
     
                         </figure>
@@ -33,10 +33,10 @@
             </a>         
             </tr>
             {% endfor %}
-            
-        </tbody>
-    </table><br>
-    </div>
+        </tbody> 
+    </table>
+     <div class="card-body"> Order Payment Method :- {{ i.payment_type }} </div>
+    </div><hr>
     {% endfor %}                   
     {% else %}
     <p>No order has been made yet.</p><br>
