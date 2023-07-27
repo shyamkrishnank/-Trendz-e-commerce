@@ -1,11 +1,71 @@
 {% extends 'adminBase.html' %}
 {%block dashboard-active %} active {%  endblock %}
 {% block contant %}
-<div class="col-lg-6 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">Line chart</h4>
-        <canvas id="lineChart" style="height:250px"></canvas>
+
+  <div class="row">
+    <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="text-muted font-weight-normal">Today</h6>
+          <div class="row">
+            <div class="col-9">
+              <div class="d-flex align-items-center align-self-start">
+                <h3 class="mb-0">{{ report.thisDay.count }}</h3>
+              </div>
+              <p> Rs.{{ report.dayPrice }} </p>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="text-muted font-weight-normal">This Week</h6>
+          <div class="row">
+            <div class="col-9">
+              <div class="d-flex align-items-center align-self-start">
+                <h3 class="mb-0">{{ report.thisWeek.count }}</h3>
+              </div>
+              <p>Rs.{{ report.weekPrice }}</p>
+              <p></p>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="text-muted font-weight-normal">This Year</h6>
+          <div class="row">
+            <div class="col-9">
+              <div class="d-flex align-items-center align-self-start">
+                <h3 class="mb-0">{{ report.thisYear.count }}</h3>
+              </div>
+              <p>Rs:{{ report.yearPrice }} </p>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="text-muted font-weight-normal">Total</h6>
+          <div class="row">
+            <div class="col-9">
+              <div class="d-flex align-items-center align-self-start">
+                <h3 class="mb-0">{{ report.order.count }}</h3>
+              </div>
+              <p>Rs{{ report.totalPrice }} </p>
+            </div>
+          </div>
+          
+        </div>
       </div>
     </div>
   </div>

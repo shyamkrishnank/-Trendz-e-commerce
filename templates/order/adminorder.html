@@ -1,7 +1,37 @@
 {% extends 'adminBase.html' %}
 {% block order_active %} active {%  endblock %}
 {% block contant %}
-
+<div class="container mb-3">
+  <form action="{% url 'filter' %}" method="POST" id="myForm"> <!-- Specify the action and method for the form -->
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-4"> <!-- Adjust the width of the column as needed -->    
+        <div class="container mt-4">
+          <div class="input-group">
+            <input type="text" class="form-control bg-dark text-white" placeholder="{% if place %}{{ place }}{% else %} Search with id {% endif %}" aria-label="Search" name="order_id"> <!-- Add the name attribute to access the value in the backend -->
+            <div class="input-group-append">
+              <button class="btn btn-outline-light" type="submit">Search</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4"></div>
+      <div class="col-4 mt-4"> <!-- Adjust the width of the column as needed -->
+        <select class="form-control form-control-sm" id="selectBox" name="order_status"> <!-- Add the name attribute to access the value in the backend -->
+          <option value="">ALL</option>
+          <option {% if select == "Order Confirmed" %} selected {% endif %} value="Order Confirmed">Order Confirmed</option>
+          <option {% if select == "Order Shipped" %} selected {% endif %} value="Order Shipped">Order Shipped</option>
+          <option {% if select == "Order Out Of Delivery" %} selected {% endif %} value="Order Out Of Delivery">Order Out of Delivery </option>
+          <option {% if select == "Order Delivered" %} selected {% endif %} value="Order Delivered">Order Delivered</option>
+          <option {% if select == "Order Cancelled" %} selected {% endif %} value="Order Cancelled">Order Cancelled</option>
+          <option {% if select == "Order Returned" %} selected {% endif %} value="Order Returned">Order Returned</option>
+          <option {% if select == "Order Pending" %} selected {% endif %} value="Order Pending">Order Pending</option>
+          <!-- Add more options as needed -->
+        </select>
+      </div>
+    </div>
+  </form>
+</div>
 <table class="table table-dark">
     <thead>
       <tr>
@@ -24,5 +54,11 @@
       {% endfor %}
     </tbody>
   </table>
+  <script>
+    // JavaScript code to submit the form when the select box value changes
+    document.getElementById("selectBox").addEventListener("change", function() {
+      document.getElementById("myForm").submit();
+    });
+  </script>
 
 {% endblock %}

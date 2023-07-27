@@ -3,10 +3,26 @@ from accounts.models import Users,Address
 from .models import Order,OrderDetail
 from cart.models import Cart
 from django.utils import timezone
+from django.views.decorators.cache import never_cache
 
 def adminOrders(request):
     order = Order.objects.all().order_by('-date_created')
     return render(request,'order/adminorder.html',{'order':order})
+
+@never_cache
+def filter(request):
+    if request.method == 'POST':
+        search = request.POST.get('order_id')
+        status = request.POST.get('order_status')
+        if status:
+            orders = Order.objects.filter(orderitems__order_status = status).distinct()
+        else:
+            orders = Order.objects.all()
+        if search:
+            element = orders.filter(order_num = search)
+        else:
+            element = orders
+        return render(request,'order/adminorder.html',{'order':element,'select':status,'place':search})
 
 def adminOrderDetail(request,id):
     order = Order.objects.get(id = id)

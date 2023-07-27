@@ -10,6 +10,7 @@ urlpatterns = [
     path('adminorder/', views.adminOrders, name = 'adminorder'),
     path('adminorderdetail/<int:id>',views.adminOrderDetail, name = 'adminorderdetails'),
     path('status_change/<int:id>', views.status_change, name = 'statuschange'),
-    path('cancel_order/<int:id>', views.order_cancel, name = 'cancel_order')
+    path('cancel_order/<int:id>', views.order_cancel, name = 'cancel_order'),
+    path('orderfilter/', views.filter, name= 'filter')
    
 ]
