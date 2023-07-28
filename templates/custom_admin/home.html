@@ -69,4 +69,128 @@
       </div>
     </div>
   </div>
+  <div class="d-flex justify-content-center">
+   <div class="card "style="width: 40rem;"  >
+    <div class="card-body" >
+      <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div>
+     </div>
+                    <h4 class="card-title">Order Numbers Date-wise Graph</h4>
+                    <canvas id="orderChart"></canvas>
+    </div>
+  </div>
+    </div>
+
+    <div class="mt-5" style="width: 40rem;">
+      <h3 class="my-2">TODAY</h3>
+      <ul class="nav nav-tabs" id="myTabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="table1-tab" data-toggle="tab" href="#table1" role="tab" aria-controls="table1" aria-selected="true">Orders</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="table2-tab" data-toggle="tab" href="#table2" role="tab" aria-controls="table2" aria-selected="false">Pending Return Requests</a>
+        </li>
+      </ul>
+    
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="table1" role="tabpanel" aria-labelledby="table1-tab">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Order num</th>
+                <th>Username</th>
+                <!-- Add more table headers if needed -->
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in report.thisDay %}
+                <tr>
+                  <td>{{ item.order_num }}</td>
+                  <td>{{ item.user.username }}</td>
+                  <td><a href="{% url 'adminorderdetails' item.id %}">View details</a></td>
+                  <!-- Add more table cells for other fields if needed -->
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="tab-pane fade" id="table2" role="tabpanel" aria-labelledby="table2-tab">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Order num</th>
+                <th>Username</th>
+                <!-- Add more table headers if needed -->
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in report.pending %}
+                <tr>
+                  <td>{{ item.order_num }}</td>
+                  <td>{{ item.user.username }}</td>
+                  <td><a href="{% url 'adminorderdetails' item.id %}">View details</a></td>
+                  <!-- Add more table cells for other fields if needed -->
+                </tr>
+              {% endfor %}
+          </table>
+        </div>
+      </div>
+    </div>
+    
+
+
+<script>
+ document.addEventListener('DOMContentLoaded', function () {
+    const orderData = {{ order_data|safe }};
+
+    // Process the data and create the Chart.js configuration
+    const labels = orderData.map(data => data.date);
+    const dataValues = orderData.map(data => data.order_count);
+
+    const chartConfig = {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Order Numbers',
+                data: dataValues,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'day',
+                        tooltipFormat: 'YYYY-MM-DD',
+                        displayFormats: {
+                            day: 'MMM DD'
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Order Numbers'
+                    }
+                }
+            }
+        }
+    };
+
+    // Create the chart
+    const ctx = document.getElementById('orderChart').getContext('2d');
+    new Chart(ctx, chartConfig);
+});
+
+
+</script>
 {% endblock %}

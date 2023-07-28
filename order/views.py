@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from accounts.models import Users,Address
-from .models import Order,OrderDetail
+from .models import Order,OrderDetail,Returned
 from cart.models import Cart
 from django.utils import timezone
 from django.views.decorators.cache import never_cache
@@ -35,6 +35,10 @@ def status_change(request,id):
         order = OrderDetail.objects.get(id = id)
         if status == 'Order Delivered':
             order.date_delivered = timezone.now()
+        if status == 'Order Returned':
+            return_ = order.returned.first()
+            return_.date_returned = timezone.now()
+            return_.save()
         order.order_status = status
         order.save()
         return redirect('adminorderdetails',order.order.id)
@@ -84,4 +88,25 @@ def order_cancel(request,id):
     order.order_status = 'Order Cancelled'
     order.save()
     return redirect('orderdetails',main_id)
+
+def return_reason(request,id):
+    order = OrderDetail.objects.get(id = id)
+    return render(request,'order/return/returnconf.html',{'order':order})
+
+def return_confirmation(request):
+    if request.method == 'POST':
+        order = OrderDetail.objects.get(id = request.POST.get('order_id'))
+        reason = request.POST.get('reason')
+        discription = request.POST.get('details')
+        r_obj = Returned.objects.create(order = order,reason = reason,details = discription)
+        r_obj.save()
+        order.order_status = 'Order Pending'
+        order.save()
+        r_id = r_obj.return_num
+        return render(request,'order/return/returnconfirm.html',{'r_id':r_id})
+
+        
+
+   
+    
 

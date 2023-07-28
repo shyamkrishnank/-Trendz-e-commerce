@@ -7,6 +7,7 @@ from twilio.rest import Client
 from django.contrib.auth.models import User
 from category.models import Category
 from products.models import Products,ProductImage
+from order.models import OrderDetail
 
 # Create your views here.
 # -----------------------------------------------------home----------
@@ -235,7 +236,7 @@ def delete_address(request,id):
     edit.active = False
     edit.save()
     return redirect('address')
-    
+
 
 
     

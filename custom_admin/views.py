@@ -45,6 +45,15 @@ def home(request):
         current_year = timezone.now().year
         this_year = order.filter(date_created__year = current_year)
         this_year_price = sum(i.total_price for i in this_year)
+        five_days_ago = current_date - timedelta(days=6)
+        objects_last_5_days = order.filter(date_created__gte=five_days_ago)
+        pending = order.filter(orderitems__order_status = 'Order Pending').distinct()
+        order_data = []
+        for i in range(0,7):
+            date = current_date - timedelta(days=6-i)
+            count = 0
+            count = objects_last_5_days.filter(date_created__date=date).count()
+            order_data.append({'date':date.strftime('%Y-%m-%d'),'order_count':count})
         report = {
             'thisDay':this_day,
             'thisYear':this_year,
@@ -53,9 +62,10 @@ def home(request):
             'weekPrice':this_week_price,
             'yearPrice':this_year_price,
             'order':order,
-            'totalPrice':total_price
+            'totalPrice':total_price,
+            'pending':pending
         }
-        return render(request,'custom_admin/home.html',{'report':report})
+        return render(request,'custom_admin/home.html',{'report':report,'order_data':order_data})
     else:
         return redirect('admin_login')
 

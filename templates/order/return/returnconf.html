@@ -1,0 +1,44 @@
+{% extends 'accountsBase.html' %}
+{% block contant %}
+<div class="row container mb-2">
+    <div class="col-6 d-flex justify-content-center">
+        <div class="card text-white mb-3" style="max-width:20rem;">
+            <div class="card-body">
+              <img src="{{ order.products.images.first.image.url }}" alt="">
+              <h5 class="card-title">{{ order.products.name }}</h5>
+              <p>Quantity :{{ order.quantity }} </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-5">
+        <div class="container mt-5">
+            <h3 class=" mb-3 card-title">Reson For Return</h3>
+            <form method="POST" action="{% url 'return_confirmation' %}" >
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="order_id">Order ID:</label>
+                    <input type="text" class="form-control form-control-sm"  name="order_num" id="order_id" placeholder="{{ order.order.order_num }}" readonly>
+                    <input type="hidden" value="{{order.id}}" name="order_id" > 
+                </div>
+                <div class="form-group">
+                    <label for="reason">Select Reason for Return:</label>
+                    <select class="form-control" id="reason" name="reason" required>
+                        <option value="">Please select a reason</option>
+                        <option value="damaged">Damaged Product</option>
+                        <option value="wrong_item">Received Wrong Item</option>
+                        <option value="defective">Defective Product</option>
+                        <option value="changed_mind">Changed Mind</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description (Optional):</label>
+                    <textarea class="form-control" id="description" rows="3" name="details" placeholder="Enter additional details"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -18,7 +18,8 @@ urlpatterns=[
     path('address/',views.address, name = 'address'),
     path('add_address/<int:check>', views.add_address, name = 'add_address'),
     path('edit_address/<int:id>/', views.edit_address, name = 'edit_address'),
-    path('delete_adddress/<int:id>', views.delete_address, name = 'delete_address')
+    path('delete_adddress/<int:id>', views.delete_address, name = 'delete_address'),
+   
 
 
 ]

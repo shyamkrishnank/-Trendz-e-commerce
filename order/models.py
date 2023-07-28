@@ -52,4 +52,16 @@ class OrderDetail(models.Model):
     def total_price(self):
         total= self.products.price * self.quantity
         return total
+
+class Returned(models.Model):
+    def generate_return_id():
+        chars = string.ascii_uppercase + string.digits
+        return ''.join(random.choice(chars) for _ in range(10))
+    return_num = models.CharField(max_length=20, default=generate_return_id)
+    order = models.ForeignKey(OrderDetail,on_delete=models.CASCADE, related_name='returned')
+    reason = models.TextField()
+    details = models.TextField(null=True, blank=True, default=None)
+    date_submitted = models.DateTimeField(auto_now=True)
+    date_returned = models.DateTimeField(null=True, blank=True, default=None)
+    
     

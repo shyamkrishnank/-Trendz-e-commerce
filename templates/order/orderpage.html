@@ -26,6 +26,8 @@
                           <div class="cart-product-quantity">
                             {% if items.order_status == 'Order Cancelled' %}
                             <h2 class="product-title"><a class="text-danger">{{items.order_status}}</a></h2>
+                            {% elif items.order_status == 'Order Pending' %}
+                            <h2 class="product-title"><a class="text-primary">Return Requested</a></h2>
                             {% else %}
                             <h2 class="product-title"><a class="text-success">{{items.order_status}}</a></h2>
                             {% endif %}
