@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login
-from . models import Users,Address
+from . models import *
 import random
 from django.db.models import Q
 from twilio.rest import Client
@@ -101,6 +101,8 @@ def otp_validate(request):
              in_user = User.objects.create_user(username = user_detail['username'],password = user_detail['password'])
              user = Users.objects.create(user=in_user,username = user_detail['username'],email = user_detail['email'],phone = user_detail['phone'])
              user.save()
+             wallet = Wallet.objects.create(user = user)
+             wallet.save()
              request.session.flush()
              return redirect('user_login') 
         else:
@@ -236,6 +238,9 @@ def delete_address(request,id):
     edit.active = False
     edit.save()
     return redirect('address')
+
+def wallet(request):
+    return render(request,'accounts/wallet.html')
 
 
 

@@ -27,6 +27,7 @@
    <!-- Plugins CSS File -->
    <link rel="stylesheet" href="{% static 'accounts/assets/css/bootstrap.min.css' %}">
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+   
    <!-- Main CSS File -->
    <link rel="stylesheet" href="{% static 'accounts/assets/css/style.css' %}">
 </head>
@@ -40,7 +41,11 @@
                     <li>
                         <a href="#">Links</a>
                         <ul>
-                            <li><a href="#"><i class="icon-heart-o"></i>Wishlist <span>(3)</span></a></li>
+                            {% if user_exists %}
+                            <li><a href="{% url 'wallet' %}"> My Wallet </a></li>
+                            {% else %}
+                            <li><a href="" onclick="return confirm('You have to login to have a wallet!')" > My Wallet </a></li>
+                            {% endif %}
                             <li><a href="#">About Us</a></li>
                             <li><a href="#">Contact Us</a></li>
                             {% if user_exists %}
@@ -134,14 +139,15 @@
 
                 <div class="dropdown cart-dropdown">
                     {% if user_exists %}
-                    <a href="{% url 'cart' %}" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" data-display="static">
+                    <a href="{% url 'cart' %}" class="dropdown-toggle" role="button" >
                         <i class="icon-shopping-cart"></i>  
                     </a>
                     {% else %}
-                    <a href="" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false"  data-display="static" onclick="return confirm('You have to login to have a cart!')">
+                    <a href="" class="dropdown-toggle" role="button"  onclick="return confirm('You have to login to have a cart!')">
                         <i class="icon-shopping-cart"></i>  
                     </a>
                     {% endif %}
+                    <a class="dropdown-toggle" role="button" ></a>
 
                 </div><!-- End .cart-dropdown -->
             </div><!-- End .header-right -->

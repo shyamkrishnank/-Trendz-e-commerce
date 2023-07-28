@@ -1,9 +1,12 @@
 from django.shortcuts import render,redirect
-from accounts.models import Users,Address
+from accounts.models import *
 from .models import Order,OrderDetail,Returned
 from cart.models import Cart
 from django.utils import timezone
 from django.views.decorators.cache import never_cache
+from decimal import Decimal
+
+
 
 def adminOrders(request):
     order = Order.objects.all().order_by('-date_created')
@@ -36,6 +39,10 @@ def status_change(request,id):
         if status == 'Order Delivered':
             order.date_delivered = timezone.now()
         if status == 'Order Returned':
+            amount = order.total_price
+            wallet = Wallet.objects.get(user = order.order.user)
+            wallet.amount = amount
+            wallet.save()
             return_ = order.returned.first()
             return_.date_returned = timezone.now()
             return_.save()
@@ -51,15 +58,18 @@ def order(request):
         address = Address.objects.get(id = request.POST.get('address_radio'))
         order = Order.objects.create(user = user,address = address)
         payment = request.POST.get('payment_method')
+        cart = Cart.objects.get(user = user)
         print(payment)
-        if payment == 'card':
-            order.payment_type ='DEBIT/CREDIT CARD'
+        if payment == 'wallet':
+            order.payment_type ='FROM WALLET'
+            wallet = Wallet.objects.get(user = user)
+            wallet.amount -= Decimal(str(cart.total_price))
+            wallet.save()
         elif payment == 'onlinepayment':
             order.payment_type = 'ONLINE PAYMENT'
         else:
             pass
         order.save()
-        cart = Cart.objects.get(user = user)
         cartitems = cart.cartitems.all()
         for items in cartitems:
             OrderDetail.objects.create(order = order,products = items.products,quantity = items.quantity) 

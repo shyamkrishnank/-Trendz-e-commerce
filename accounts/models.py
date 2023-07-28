@@ -19,4 +19,8 @@ class Address(models.Model):
     current = models.BooleanField(default=False,)
     active = models.BooleanField(default=True)
 
+class Wallet(models.Model):
+    user = models.ForeignKey(Users,on_delete=models.CASCADE,related_name='wallet')
+    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+
 

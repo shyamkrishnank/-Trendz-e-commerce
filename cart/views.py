@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from .models import *
 from django.db.models import Q
-from accounts.models import Users,Address
+from accounts.models import *
 from django.contrib.auth.models import User
 import razorpay
 from django.conf import settings
@@ -83,11 +83,12 @@ def checkout(request):
            main_address = None
     except:
         related_address - None
+    wallet_amount = Wallet.objects.get(user = user).amount
     cart = Cart.objects.get(user = user)
     client = razorpay.Client(auth=(settings.RAZOR_KEY, settings.KEY_SECRET))
     payment = client.order.create({'amount': cart.total_price*100,'currency':'INR', 'payment_capture':1})
     cartitems = cart.cartitems.all() 
-    return render(request, 'cart/checkout.html',{'main_address':main_address,'related_address':related_address,'cart':cart,'cartitems':cartitems,'payment':payment})
+    return render(request, 'cart/checkout.html',{'main_address':main_address,'wallet':wallet_amount,'related_address':related_address,'cart':cart,'cartitems':cartitems,'payment':payment})
 
 
 def add_checkout_address(request):

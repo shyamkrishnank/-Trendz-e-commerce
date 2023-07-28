@@ -6,9 +6,9 @@ from products.models import Products
 
 class Order(models.Model):
     PAYMENT_CHOICES = (
-        ('debit_credit_card','DEBIT/CREDIT CARD'),
+        ('wallet_payment','FROM WALLET'),
         ('cash_on_delivery','CASH ON DELIVERY'),
-        ('online_payment','ONLINE PAYMENT')
+        ('online_payment','ONLINE PAYMENT'),
     )
  
 

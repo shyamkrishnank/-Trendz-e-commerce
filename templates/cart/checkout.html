@@ -160,19 +160,28 @@
                                     <div class="card">
                                         <div class="card-header" id="heading-3">
                                             <h2 class="card-title"> 
-                                                <a class="collapsed" onclick="redirectToOrderView('card')"  role="button"  data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-                                                    Debit/Credit Card
+                                                <a class="collapsed" onclick="redirectToOrderView('wallet')"  role="button"  data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+                                                    From My Wallet
                                                 </a>
                                             </h2>
                                         </div><!-- End .card-header -->
+                                        {% if cart.total_price > wallet %}
                                         <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-payment">
                                             
-                                            <div class="card-body">payment is secure when using the debit credit card for the payment</div>
+                                            <div class="card-body text-danger">You have insufficient ammount in your wallet to order this product.You can choose either Online Payment or COD for this order </div>
+                                            
+                                        </div><!-- End .collapse -->
+
+                                        {% else %}
+                                        <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-payment">
+                    
+                                            <div class="card-body">Pay from the wallet amount </div>
                                             <button type="submit"  class="btn btn-outline-primary-2 btn-order btn-block">
                                                 <span class="btn-text">Place Order</span>
                                                 <span  class="btn-hover-text">Proceed to Checkout</span>
                                             </button>
                                         </div><!-- End .collapse -->
+                                        {% endif %}
                                     </div><!-- End .card -->
 
                                     <div class="card">
