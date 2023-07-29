@@ -1,0 +1,178 @@
+{% extends 'adminBase.html' %}
+{%block offer-active %} active {%  endblock %}
+{% block contant %}
+<div class="page-header">
+    <h3 class="page-title"> Offers </h3>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+            +Add Offer
+          </button></a></li>
+      </ol>
+    </nav>
+</div>
+
+<table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">No.</th>
+        <th scope="col">Name</th>
+        <th scope="col">Discount</th>
+        <th scope="col">Category eligible</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">End Date</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for i in offer %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ i.name }}</td>
+        <td>{{ i.discount }}%</td>
+        <td>{% for j in i.categoryEligible.all %}{{ j.category.name }},{% endfor %}</td>
+        <td>{{ i.start_date }}</td>
+        <td>{{ i.end_date }}</td>
+        {% if i.is_active %}
+        <td><a href="{% url 'offerstatus' i.id %}"><button type="button"  class="btn btn-danger">INACTIVE</button></a></td>
+        {% else %}
+         <td><a href="{% url 'offerstatus' i.id %}"><button type="button"  class="btn btn-success">ACTIVATE</button></a></td> 
+        {% endif %}
+        <td> <a  href="#" data-toggle="modal" data-target="#exampleModalLong{{i.id}}">
+            View Offer
+        </a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+<!-- Nav category -->
+<div class="modal fade" id ="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">OFFER</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="{% url 'addOffer' %}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-6">
+                <label for="categoryName">Offer Name:</label><br>
+                <input type="text" id="categoryName" name="name" required>  </div>
+                <div class="col-6">
+                 <label for="categoryImage">Category eligible:</label><br>
+                 {% for i in category %}
+                     <input type="checkbox" name="catRelate" value="{{ i.id }}"> {{ i.name }} <br>
+                 {% endfor %}
+                 </div>
+              </div>
+
+              <div class=" row mt-1"  >
+                <div class="col-6">  <label for="categoryName">Discount percentage:</label><br>
+                    <input type="text" id="categoryName" name="discount"  required> </div> 
+                <div class="col-6"> </div>
+                </div>
+
+             <div class="row mt-1" >
+                <div class="col-6" > 
+                    <label for="categoryName">Start Date:</label><br>
+                    <input type="date" id="categoryName" name="start_date"   required> 
+                </div>
+                <div class="col-6" >
+                    <label for="categoryName">End Date:</label><br>
+                    <input type="date" id="categoryName" name="end_date"   required>
+                </div>
+             </div>
+             <div class="row  mt-1">
+                <div class="col-6">  <label for="categoryName">Discription:</label><br>
+                    <input type="text" id="categoryName" name="discription"   required> </div> 
+             </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Apply Offer</button>
+        </form>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  
+  <!-- Modal view-->
+  {% for i in offer %}
+  <div class="modal fade" id="exampleModalLong{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">{{ i.name }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="{% url 'addOffer' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col-6">
+                  <label for="categoryName">Offer Name:</label><br>
+                  <input type="text" id="categoryName" name="name" value="{{i.name}}" placeholder="{{i.name}}" >  </div>
+                  <div class="col-6">
+                   <label for="categoryImage">Category eligible:</label><br>
+                   <!-- {% for j in category %}
+                       <input type="checkbox"  name="catRelate" value="{{ j.id }}" {% if j in i.category_eligible.all %} checked {% endif %}> {{ j.name }} <br>
+                   {% endfor %}
+                  -->
+                  {% for j in category %}
+                   <input type="checkbox" name="catRelate" value="{{ j.id }}"{% for check in i.categoryEligible.all %}{% if check.category == j %}checked  {% endif %} {% endfor %} > {{ j.name }} <br>
+                  {% endfor %}
+       
+                   </div>
+                </div>
+                
+                <div class=" row mt-1"  >
+                    <div class="col-6">  <label for="categoryName">Offer id:</label><br>
+                        <input type="text" id="categoryName" name="offerid" placeholder="{{ i.offer_num }}" value="{{i.offer_num}}" > </div> 
+                    <div class="col-6"> </div>
+                    </div>
+  
+                <div class=" row mt-1"  >
+                  <div class="col-6">  <label for="categoryName">Discount percentage:</label><br>
+                      <input type="text" id="categoryName" name="discount" placeholder="{{ i.discount }}" value="{{i.discount}}" > </div> 
+                  <div class="col-6"> </div>
+                  </div>
+  
+               <div class="row mt-1" >
+                  <div class="col-6" > 
+                      <label for="categoryName">Start Date:</label><br>
+                      <input type="date" name="start_date" placeholder="Start date" value="{{i.start_date|date:'Y-m-d'}}" > 
+                  </div>
+                  <div class="col-6" >
+                      <label for="categoryName">End Date:</label><br>
+                      <input type="date" name="end_date" placeholder="Start date" value="{{i.start_date|date:'Y-m-d'}}"  > 
+                  </div>
+               </div>
+               <div class="row  mt-1">
+                  <div class="col-6"> 
+                     <label for="categoryName">Discription:</label><br>
+                     <textarea id="categoryDescription" name="description" placeholder="{{ i.discription }}" rows="4" cols="50"  ></textarea> </div> 
+               </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Edit Offer</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+   {% endfor %}
+
+
+
+
+
+
+{% endblock %}

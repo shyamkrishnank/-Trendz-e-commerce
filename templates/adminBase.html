@@ -19,6 +19,12 @@
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{% static 'custom_admin/assets/images/favicon.png' %}" />
   </head>
+  <style>
+    tr{
+      color: rgb(236, 227, 227);
+    }
+  
+  </style>
   <body>
     <div class="container-scroller">
       <!-- partial:../../partials/_sidebar.html -->
@@ -69,6 +75,14 @@
                 <i class="mdi mdi-table-large"></i>
               </span>
               <span class="menu-title">Orders</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items {% block offer_active %} {% endblock %}">
+            <a class="nav-link" href="{% url 'adminoffer' %}">
+              <span class="menu-icon">
+                <i class="mdi mdi-table-large"></i>
+              </span>
+              <span class="menu-title">Offers</span>
             </a>
           </li>
         </ul>

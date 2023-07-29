@@ -18,9 +18,9 @@
         <td>{{ i.email }} </td>
         <td><p>{{ i.phone }}</p></td>
         {% if i.user.is_active %}
-        <td><a href="{% url 'user_active' i.id %}"><button type="button"  class="btn btn-danger" data-toggle="modal" data-target="#editmodal">Block</button></a></td>
+        <td><a href="{% url 'user_active' i.id %}"><button type="button"  class="btn btn-danger">Block</button></a></td>
         {% else %}
-         <td><a href="{% url 'user_active' i.id %}"><button type="button"  class="btn btn-success" data-toggle="modal" data-target="#editmodal">Unblock</button></a></td> -->
+         <td><a href="{% url 'user_active' i.id %}"><button type="button"  class="btn btn-success">Unblock</button></a></td>
         {% endif %}
         <td><a href="{% url 'delete_user' i.id %}" onclick="return confirm('Are you sure you want to delete?');" class="text-danger">Delete</a> </td>
       </tr>
