@@ -39,9 +39,9 @@ def status_change(request,id):
         if status == 'Order Delivered':
             order.date_delivered = timezone.now()
         if status == 'Order Returned':
-            amount = order.total_price
+            amount = Decimal(order.total_price)
             wallet = Wallet.objects.get(user = order.order.user)
-            wallet.amount = amount
+            wallet.amount += amount
             wallet.save()
             return_ = order.returned.first()
             return_.date_returned = timezone.now()
@@ -72,7 +72,7 @@ def order(request):
         order.save()
         cartitems = cart.cartitems.all()
         for items in cartitems:
-            OrderDetail.objects.create(order = order,products = items.products,quantity = items.quantity) 
+            OrderDetail.objects.create(order = order,products = items.products,products_price = items.products.price,quantity = items.quantity) 
             items.products.stocks -= items.quantity
             items.products.save()      
         cart.delete()   

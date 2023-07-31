@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect
 from accounts.models import *
 from .models import *
 from category.models import *
+from django.contrib import messages
+from django.utils import timezone
 # Create your views here.
 
 def adminOffer(request):
@@ -43,15 +45,41 @@ def addOffer(request):
                 offer_cat = OfferCategory.objects.create(offer = offer,category = Category.objects.get(id = i))
                 offer_cat.save()
             return redirect('adminoffer')
-        
+               
 def offerStatus(request,id):
     offer = Offer.objects.get(id = id)
     if offer.is_active:
         offer.is_active = 0
+        offer.save()
+        category = offer.categoryEligible.all()
+        for i in category:
+            products = i.category.products.all()
+            for j in products:
+                j.price = j.original_price 
+                j.save()
+        return redirect('adminoffer')
+
     else:
+        def is_today_between(start_date, end_date):
+            today = timezone.now().date()
+            return start_date <= today <= end_date
+        
+        if is_today_between(offer.start_date,offer.end_date):    
+            if Offer.objects.filter(is_active = 1).exists():
+                messages.warning(request, 'You can only activate one offer at a time!')
+                return redirect('adminoffer')
+        else:
+            messages.warning(request, 'You can only activate an offer when the offer within start and end date')
+            return redirect('adminoffer')
         offer.is_active = 1
-    offer.save()
-    return redirect('adminoffer')
+        offer.save()
+        category = offer.categoryEligible.all()
+        for i in category:
+            products = i.category.products.all()
+            for j in products:
+                j.price = j.original_price * (offer.discount/100)
+                j.save()
+        return redirect('adminoffer')
     
     
 

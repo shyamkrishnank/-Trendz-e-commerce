@@ -27,7 +27,7 @@ class Order(models.Model):
     def total_price(self):
         total = 0
         for items in self.orderitems.all():
-            total += items.products.price * items.quantity
+            total += items.products_price * items.quantity
         return total
     
 
@@ -44,13 +44,14 @@ class OrderDetail(models.Model):
     )
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='orderitems')
     products = models.ForeignKey(Products, on_delete=models.CASCADE)
+    products_price = models.FloatField(default=0)
     quantity = models.IntegerField()
     order_status = models.CharField(max_length=50,choices=order_choices,default='Order Confirmed')
     date_delivered = models.DateTimeField(null=True, blank=True, default=None)
 
     @property
     def total_price(self):
-        total= self.products.price * self.quantity
+        total= self.products_price * self.quantity
         return total
 
 class Returned(models.Model):

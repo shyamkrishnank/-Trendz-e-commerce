@@ -1,6 +1,8 @@
 {% extends 'adminBase.html' %}
 {%block offer-active %} active {%  endblock %}
 {% block contant %}
+
+
 <div class="page-header">
     <h3 class="page-title"> Offers </h3>
     <nav aria-label="breadcrumb">
@@ -11,6 +13,7 @@
       </ol>
     </nav>
 </div>
+{{message}}
 
 <table class="table table-dark">
     <thead>
@@ -169,6 +172,7 @@
     </div>
   </div>
    {% endfor %}
+ 
 
 
 

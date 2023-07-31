@@ -26,30 +26,41 @@ def cart(request):
 
 def add_cart(request,id):
     user = Users.objects.get(username = request.session['user_exists'] )
+    product = Products.objects.get(id = id)
     try:
         cart = Cart.objects.get(user = user )
-        if CartItems.objects.filter(cart = cart,products = Products.objects.get(id = id)).exists():
-            id = Products.objects.get(id=id).category.id
+        if CartItems.objects.filter(cart = cart,products = product).exists():
+            id = product.category.id
             return redirect('products',id)
     except:
         cart = Cart.objects.create(user = user)
         cart.save()
-    cart_item = CartItems.objects.create(cart = cart,products = Products.objects.get(id = id),quantity = 1)
-    cart_item.save()
-    id = Products.objects.get(id=id).category.id
+    if product.stocks > 0:
+        product.stocks -= 1
+        product.save()
+        cart_item = CartItems.objects.create(cart = cart,products = product,quantity = 1)
+        cart_item.save()
+        id = product.category.id
+        return redirect('products',id)
+    id = product.category.id
     return redirect('products',id)
 
 def add_cart1(request,id):
     user = Users.objects.get(username = request.session['user_exists'] )
+    product = Products.objects.get(id = id)
     try:
         cart = Cart.objects.get(user = user )
-        if CartItems.objects.filter(cart = cart,products = Products.objects.get(id = id)).exists():
+        if CartItems.objects.filter(cart = cart,products = product).exists():
             return redirect('product_detail',id)
     except:
         cart = Cart.objects.create(user = user)
         cart.save()
-    cart_item = CartItems.objects.create(cart = cart,products = Products.objects.get(id = id),quantity = 1)
-    cart_item.save()
+    if product.stocks > 0:
+        product.stocks -=1
+        product.save()
+        cart_item = CartItems.objects.create(cart = cart,products = product,quantity = 1)
+        cart_item.save()
+        return redirect('product_detail', id)
     return redirect('product_detail', id)
 
 def remove_cartitem(request,id):
@@ -59,8 +70,12 @@ def remove_cartitem(request,id):
 
 def quantity_increment(request,id):
     cartitems = CartItems.objects.get(id = id)
+    if cartitems.products.stocks <=1:
+        return redirect('cart')
     if cartitems.quantity == 6:
         return redirect('cart')
+    cartitems.products.stocks -= 1
+    cartitems.products.save()
     cartitems.quantity += 1
     cartitems.save()
     return redirect ('cart')
@@ -69,6 +84,8 @@ def quantity_decrement(request,id):
     cartitems = CartItems.objects.get(id = id)
     if cartitems.quantity == 1:
         return redirect ('cart')
+    cartitems.products.stocks += 1
+    cartitems.products.save()
     cartitems.quantity -= 1
     cartitems.save()
     return redirect ('cart')

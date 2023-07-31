@@ -239,6 +239,12 @@ def delete_address(request,id):
     edit.save()
     return redirect('address')
 
+def shop(request):
+    products = Products.objects.order_by('?')[:9]
+    category = Category.objects.all()
+    return render(request,'accounts/products.html',{'products':products,'count':9,'category':category})
+
+
 def wallet(request):
     return render(request,'accounts/wallet.html')
 
