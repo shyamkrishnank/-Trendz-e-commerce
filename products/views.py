@@ -20,15 +20,13 @@ def add_product(request,id):
         if request.method == 'POST':
             name = request.POST.get('name')
             category = Category.objects.get(id = id)
-            price = request.POST.get('price')
+            price1 = request.POST.get('price')
             stock = request.POST.get('stock')
             image1 = request.FILES.get('images1')
             image2 = request.FILES.get('images2')
             image3 = request.FILES.get('images3')
             discription = request.POST.get('discription')
-            
-            current = Products.objects.create(name=name,category=category,price = price, stocks=stock, discription = discription)
-            
+            current = Products.objects.create(name=name,category=category,price = price1, original_price = price1 , stocks=stock, discription = discription)
             ProductImage.objects.create(product = current,image = image1)
             ProductImage.objects.create(product = current,image = image2)
             ProductImage.objects.create(product = current,image = image3)

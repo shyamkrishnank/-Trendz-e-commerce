@@ -8,7 +8,7 @@ class Products(models.Model):
     price = models.FloatField(default=0)
 
     def make_price(self):
-        return self.price
+        return 0.0
 
     original_price = models.FloatField(default= make_price)
     stocks = models.IntegerField(default=0)
