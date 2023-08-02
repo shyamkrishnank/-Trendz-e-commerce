@@ -77,7 +77,7 @@ def offerStatus(request,id):
         for i in category:
             products = i.category.products.all()
             for j in products:
-                j.price = j.original_price * (offer.discount/100)
+                j.price = float(j.original_price)  * (offer.discount/100)
                 j.save()
         return redirect('adminoffer')
     
