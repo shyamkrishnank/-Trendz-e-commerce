@@ -41,6 +41,13 @@
                 <label for="categoryName">Product Stock:</label><br>
                 <input type="text" id="categoryName" name="stock"   required> <br>
 
+                <label for="categoryImage">Age:</label><br>
+
+                {% for i in varient %}
+                <input type="checkbox" name="varient" value="{{ i.1 }}" data-relate="catRelate" {% if i.1 == selected_cat_value %}checked{% endif %}> {{ i.0 }} <br>
+                 {% endfor %}
+              
+
                 
                 <label for="categoryName">Product Discription:</label><br>
                 <input type="text" id="categoryName" name="discription"   required> <br>
@@ -94,7 +101,7 @@
         <td>{{ i.price }}</td>
         <td>{{ i.stocks }}</td>
         <td>
-          <a  data-toggle="modal" data-target="#editmodal{{ i.id }}" href="#">Edit</a>
+          <a  data-toggle="modal" data-target="#editmodal{{ i.id }}" href="#">View Details</a>
         </td>
         <td>
           <a href="{% url 'delete_product' i.id %}" onclick="return confirm('Are you sure you want to delete?');" class="text-danger" >Delete</a>
@@ -131,6 +138,11 @@
 
                 <label for="categoryName">Product stock:</label><br>
                 <input type="text" id="categoryName" name="stock" placeholder="{{i.stocks}}" value="{{i.stocks}}" required> <br>
+                
+                <label for="categoryName">Age:</label><br>
+                {% for j in varient %}
+                <input type="checkbox" name="varient" value="{{ j.1 }}" data-relate="catRelate" {% if j.0 == i.varient %}checked{% endif %}> {{ j.0 }} <br>
+                 {% endfor %}
 
                 <label for="categoryName">Product price:</label><br>
                 <input type="text" id="categoryName" name="price" placeholder="{{i.price}}" value="{{i.price}}" required> <br>
@@ -195,6 +207,24 @@
     handleImageField('categoryImage1', 'imagePreview1', 'closeButton');
     handleImageField('categoryImage2', 'imagePreview2', 'closeButton');
     handleImageField('categoryImage3', 'imagePreview3', 'closeButton');
+
+  
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkboxes = document.querySelectorAll('input[data-relate="catRelate"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    checkboxes.forEach(cb => {
+                        if (cb !== this) {
+                            cb.checked = false;
+                        }
+                    });
+                }
+            });
+        });
+    });
+
+
 </script>
 
 
