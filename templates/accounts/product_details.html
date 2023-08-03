@@ -8,7 +8,33 @@
   color: white; /* White text color */
   padding: 10px; /* Add some padding */
   text-align: center; /* Center the text */
-  display: none; /* Initially hide the message */
+  display: none; /* Initially hide the message */  
+.toast-container {
+  min-width: 200px; /* Set the minimum width of the toast container */
+  z-index: 9999; /* Set a high z-index value to position the toast above other elements */
+  pointer-events: none; /* Ensure the toast container does not block clicks to underlying elements */
+}
+
+/* Custom styles for the toast */
+.toast {
+  width:200vh;
+  height:7vh;
+  font-size: 16;
+  position: absolute; /* Position the toast absolutely */
+  top: 0; /* Position the toast at the top */
+  left: 0; /* Position the toast at the left */
+  margin: 20px; /* Add margin to create spacing from the top */
+  opacity: 0; /* Set the initial opacity to 0 (invisible) */
+  transition: opacity 0.3s ease-in-out; /* Add a transition effect for opacity */
+}
+
+/* Show the toast when it is visible */
+.toast.show {
+  opacity: 1;
+}
+
+
+
 }
 
 </style>
@@ -148,20 +174,7 @@
     
                                             <div class="details-action-wrapper">
                                                 <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
-                                                <a href="{% url 'add_cart1' main_product.id %}" onclick="checkLogin()"  class="btn-product icon-shopping-cart btn-cart-wishlist" title="Cart"><span>Add to Cart</span></a>
-                                                <script>
-                                                    function checkLogin() {
-                                                        // Simulate a user not logged in (replace this with your actual login check)
-                                                        const userLoggedIn = false;
-                                            
-                                                        if (!userLoggedIn) {
-                                                            alert("Succesfully added to the cart!");
-                                                        } else {
-                                                            // Code to add the item to the cart when the user is logged in
-                                                            // ...
-                                                        }
-                                                    }
-                                                </script>
+                                                <a href="{% url 'add_cart1' main_product.id %}" id="liveToastBtn" class="btn-product icon-shopping-cart btn-cart-wishlist" title="Cart"><span>Add to Cart</span></a>
                                             </div><!-- End .details-action-wrapper -->
                                         </div><!-- End .product-details-action -->
     
@@ -380,10 +393,39 @@
                     </div><!-- End .container -->
                 </div><!-- End .page-content -->
         </main>
-    </body>
-    </html>
+        <div class="toast-container position-fixed  " style="top: 5vh; right:6vh;">
+            <div id="liveToast" class="toast bg-success text-white fs-3" role="alert" aria-live="assertive" aria-atomic="true">
+              <div class="toast-body text-center">
+               Succesfully Added To Cart!
+              </div>
+            </div>
+          </div>
+          
    
-
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              const toastTriggers = document.querySelectorAll('.btn-product');
+          
+              if (toastTriggers) {
+                toastTriggers.forEach(trigger => {
+                  trigger.addEventListener('click', (event) => {
+                    event.preventDefault(); // Prevent the default navigation behavior
+          
+                    // Trigger the toast
+                    const toastLiveExample = document.getElementById('liveToast');
+                    const toastBootstrap = new bootstrap.Toast(toastLiveExample);
+                    toastBootstrap.show();
+          
+                    // Get the URL from the href attribute and navigate to it after a short delay
+                    const url = trigger.getAttribute('href');
+                    setTimeout(() => {
+                      window.location.href = url;
+                    }, 2000); // Adjust the delay time as needed (in milliseconds)
+                  });
+                });
+              }
+            });
+          </script>
 
 
 
