@@ -40,30 +40,6 @@
 </style>
 
 <main class="main">
-    <!--                        breadcrumb-nav-->
-    
-    <!--            <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">-->
-    <!--                <div class="container d-flex align-items-center">-->
-    <!--                    <ol class="breadcrumb">-->
-    <!--                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>-->
-    <!--                        <li class="breadcrumb-item"><a href="#">Products</a></li>-->
-    <!--                        <li class="breadcrumb-item active" aria-current="page">Default</li>-->
-    <!--                    </ol>-->
-    
-    <!--                    <nav class="product-pager ml-auto" aria-label="Product">-->
-    <!--                        <a class="product-pager-link product-pager-prev" href="#" aria-label="Previous" tabindex="-1">-->
-    <!--                            <i class="icon-angle-left"></i>-->
-    <!--                            <span>Prev</span>-->
-    <!--                        </a>-->
-    
-    <!--                        <a class="product-pager-link product-pager-next" href="#" aria-label="Next" tabindex="-1">-->
-    <!--                            <span>Next</span>-->
-    <!--                            <i class="icon-angle-right"></i>-->
-    <!--                        </a>-->
-    <!--                    </nav>&lt;!&ndash; End .pager-nav &ndash;&gt;-->
-    <!--                </div>&lt;!&ndash; End .container &ndash;&gt;-->
-    <!--            </nav>&lt;!&ndash; End .breadcrumb-nav &ndash;&gt;-->
-    
     
                 <div class="page-content">
                     <div class="container">
@@ -84,19 +60,7 @@
                                                     <img src="{{ image.image.url }}" alt="product side">
                                                 </a>
                                                 {% endfor %}
-    
-    
-    <!--                                            <a class="product-gallery-item" href="#" data-image="assets/images/products/single/2.jpg" data-zoom-image="assets/images/products/single/2-big.jpg">-->
-    <!--                                                <img src="assets/images/products/single/2-small.jpg" alt="product cross">-->
-    <!--                                            </a>-->
-    
-    <!--                                            <a class="product-gallery-item" href="#" data-image="assets/images/products/single/3.jpg" data-zoom-image="assets/images/products/single/3-big.jpg">-->
-    <!--                                                <img src="assets/images/products/single/3-small.jpg" alt="product with model">-->
-    <!--                                            </a>-->
-    
-    <!--                                            <a class="product-gallery-item" href="#" data-image="assets/images/products/single/4.jpg" data-zoom-image="assets/images/products/single/4-big.jpg">-->
-    <!--                                                <img src="assets/images/products/single/4-small.jpg" alt="product back">-->
-    <!--                                            </a>-->
+
                                             </div><!-- End .product-image-gallery -->
                                         </div><!-- End .row -->
                                     </div><!-- End .product-gallery -->
@@ -117,64 +81,20 @@
                                             ₹{{main_product.price}}
                                         </div><!-- End .product-price -->
     
-    <!--                                    <div class="product-content">-->
-    <!--                                        <p>Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing. Sed lectus. </p>-->
-    <!--                                    </div>&lt;!&ndash; End .product-content &ndash;&gt;-->
-    
-    <!--                                    <div class="details-filter-row details-row-size">-->
-    <!--                                        <label>Color:</label>-->
-    
-    <!--                                        <div class="product-nav product-nav-thumbs">-->
-    <!--                                            <a href="#" class="active">-->
-    <!--                                                <img src="assets/images/products/single/1-thumb.jpg" alt="product desc">-->
-    <!--                                            </a>-->
-    <!--                                            <a href="#">-->
-    <!--                                                <img src="assets/images/products/single/2-thumb.jpg" alt="product desc">-->
-    <!--                                            </a>-->
-    <!--                                        </div>&lt;!&ndash; End .product-nav &ndash;&gt;-->
-    <!--                                    </div>&lt;!&ndash; End .details-filter-row &ndash;&gt;-->
-    
-    <!--                                    <div class="details-filter-row details-row-size">-->
-    <!--                                        <label for="size">Size:</label>-->
-    <!--                                        <div class="select-custom">-->
-    <!--                                            <select name="size" id="size" class="form-control">-->
-    <!--                                                <option value="#" selected="selected">Select a size</option>-->
-    <!--                                                <option value="s">Small</option>-->
-    <!--                                                <option value="m">Medium</option>-->
-    <!--                                                <option value="l">Large</option>-->
-    <!--                                                <option value="xl">Extra Large</option>-->
-    <!--                                            </select>-->
-    <!--                                        </div>&lt;!&ndash; End .select-custom &ndash;&gt;-->
-    
-    <!--                                        <a href="#" class="size-guide"><i class="icon-th-list"></i>size guide</a>-->
-    <!--                                    </div>&lt;!&ndash; End .details-filter-row &ndash;&gt;-->
-    
-    <!--                                    <div class="details-filter-row details-row-size">-->
-    <!--                                        <label for="qty">Qty:</label>-->
-    <!--                                        <div class="product-details-quantity">-->
-    <!--                                            <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required="" style="display: none;">-->
-    <!--                                            <div class="input-group  input-spinner">-->
-    <!--                                                <div class="input-group-prepend">-->
-    <!--                                                    <button style="min-width: 26px" class="btn btn-decrement btn-spinner" type="button">-->
-    <!--                                                        <i class="icon-minus"></i>-->
-    <!--                                                    </button>-->
-    <!--                                                </div>-->
-    <!--                                                <input type="text" style="text-align: center" class="form-control " required="" placeholder="">-->
-    <!--                                                <div class="input-group-append">-->
-    <!--                                                    <button style="min-width: 26px" class="btn btn-increment btn-spinner" type="button">-->
-    <!--                                                        <i class="icon-plus"></i>-->
-    <!--                                                    </button>-->
-    <!--                                                </div>-->
-    <!--                                            </div>-->
-    <!--                                        </div>&lt;!&ndash; End .product-details-quantity &ndash;&gt;-->
-    <!--                                    </div>&lt;!&ndash; End .details-filter-row &ndash;&gt;-->
+   
     
                                         <div class="product-details-action">
-                                            <a href="#" class="btn-product btn-cart"><span>Buy now</span></a>
+                                            {% if main_product.stocks <= 0 %}
+                                            <a href="#" class="btn-product  btn-cart"><span>Out Of Stock</span></a>
+                                            {% else %}
+                                            <a href="#" class="btn-product forPop btn-cart"><span>Buy now</span></a>
+                                            {% endif %}
     
                                             <div class="details-action-wrapper">
-                                                <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
-                                                <a href="{% url 'add_cart1' main_product.id %}" id="liveToastBtn" class="btn-product icon-shopping-cart btn-cart-wishlist" title="Cart"><span>Add to Cart</span></a>
+                                                <a href="#" class="btn-product forPop btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
+                                                {% if main_product.stocks > 0 %}
+                                                <a href="{% url 'add_cart1' main_product.id %}" id="liveToastBtn" class="btn-product forPop icon-shopping-cart btn-cart-wishlist" title="Cart"><span>Add to Cart</span></a>
+                                                {% endif %}
                                             </div><!-- End .details-action-wrapper -->
                                         </div><!-- End .product-details-action -->
     
@@ -350,13 +270,13 @@
                                     </a>
     
                                     <div class="product-action-vertical">
-                                        <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
-                                        <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
-                                        <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
+                                        <a href="#" class="btn-product forPop-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                                        <a href="popup/quickView.html" class="btn-product forPop-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
+                                        <a href="#" class="btn-product forPop-icon btn-compare" title="Compare"><span>Compare</span></a>
                                     </div><!-- End .product-action-vertical -->
     
                                     <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                        <a href="#" class="btn-product forPop btn-cart"><span>add to cart</span></a>
                                     </div><!-- End .product-action -->
                                 </figure><!-- End .product-media -->
     
@@ -404,7 +324,7 @@
    
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-              const toastTriggers = document.querySelectorAll('.btn-product');
+              const toastTriggers = document.querySelectorAll('.forPop');
           
               if (toastTriggers) {
                 toastTriggers.forEach(trigger => {

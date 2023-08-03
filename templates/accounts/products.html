@@ -77,7 +77,11 @@
 
                         <div class="product-action">
                             {% if user_exists %}
+                             {% if i.stocks <= 0 %}
+                              <a href=""   class="btn-product "><span>Out Of Stock</span></a>
+                             {% else %}
                             <a href="{% url 'add_cart' i.id %}"  id="liveToastBtn"  class="btn-product btn-cart"><span>add to cart</span></a>
+                            {% endif %}
                             {% else %}
                             <a href="" class="btn-product btn-cart" onclick="return confirm('You have to login to have a cart!')" ><span>add to cart</span></a>
                             {% endif %}

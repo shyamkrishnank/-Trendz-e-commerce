@@ -103,7 +103,7 @@ def checkout(request):
     wallet_amount = Wallet.objects.get(user = user).amount
     cart = Cart.objects.get(user = user)
     client = razorpay.Client(auth=(settings.RAZOR_KEY, settings.KEY_SECRET))
-    payment = client.order.create({'amount': cart.total_price*100,'currency':'INR', 'payment_capture':1})
+    payment = client.order.create({'amount':float(cart.total_price*100),'currency':'INR', 'payment_capture':1})
     cartitems = cart.cartitems.all() 
     return render(request, 'cart/checkout.html',{'main_address':main_address,'wallet':wallet_amount,'related_address':related_address,'cart':cart,'cartitems':cartitems,'payment':payment})
 

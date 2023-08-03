@@ -98,7 +98,7 @@
             <img src="{{ image.image.url }}" alt="Product Image" width="100">
           {% endfor %}
         </td>
-        <td>{{ i.price }}</td>
+        <td>{{ i.original_price }}</td>
         <td>{{ i.stocks }}</td>
         <td>
           <a  data-toggle="modal" data-target="#editmodal{{ i.id }}" href="#">View Details</a>
@@ -170,45 +170,57 @@
 
   {% endfor %}
 
-  <script>
-    function handleImageField(imageInputId, imagePreviewId, closeButtonId) {
-        const storedImageData = localStorage.getItem(imageInputId);
+
+<!-- Include Cropper.js library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+
+<script>
+    function handleImageField(imageInputId, imagePreviewId, closeButtonId, cropperContainerId) {
+        const imageInput = document.getElementById(imageInputId);
         const imagePreview = document.getElementById(imagePreviewId);
+        const closeButton = document.getElementById(closeButtonId);
+        const cropperContainer = document.getElementById(cropperContainerId);
+        let cropper = null;
 
-        if (storedImageData) {
-            imagePreview.src = storedImageData;
-        }
-
-        document.getElementById(imageInputId).addEventListener('change', function(event) {
-            const fileInput = event.target;
-            const file = fileInput.files[0];
+        imageInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
 
             if (file) {
                 const reader = new FileReader();
 
                 reader.onload = function(e) {
-                    localStorage.setItem(imageInputId, e.target.result);
+                    if (cropper) {
+                        cropper.destroy();
+                    }
+
                     imagePreview.src = e.target.result;
+                    cropper = new Cropper(imagePreview, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        zoomable: false,
+                        ready: function () {
+                            cropperContainer.classList.add('show');
+                        }
+                    });
+
+                    closeButton.addEventListener('click', function() {
+                        cropperContainer.classList.remove('show');
+                        cropper.destroy();
+                    });
                 };
 
                 reader.readAsDataURL(file);
             } else {
                 imagePreview.src = '#';
-                localStorage.removeItem(imageInputId);
             }
-        });
-
-        document.getElementById(closeButtonId).addEventListener('click', function() {
-            localStorage.removeItem(imageInputId);
-            imagePreview.src = '#';
         });
     }
 
-    handleImageField('categoryImage1', 'imagePreview1', 'closeButton');
-    handleImageField('categoryImage2', 'imagePreview2', 'closeButton');
-    handleImageField('categoryImage3', 'imagePreview3', 'closeButton');
+    handleImageField('categoryImage1', 'imagePreview1', 'closeButton1', 'cropperContainer1');
+    handleImageField('categoryImage2', 'imagePreview2', 'closeButton2', 'cropperContainer2');
+    handleImageField('categoryImage3', 'imagePreview3', 'closeButton3', 'cropperContainer3');
 
-  
     document.addEventListener("DOMContentLoaded", function () {
         const checkboxes = document.querySelectorAll('input[data-relate="catRelate"]');
         checkboxes.forEach(checkbox => {
@@ -223,9 +235,8 @@
             });
         });
     });
-
-
 </script>
+
 
 
 
