@@ -156,7 +156,7 @@
         </div>
       </div>
       
-
+{% if user_exists %}
       <script>
         document.addEventListener('DOMContentLoaded', function() {
           const toastTriggers = document.querySelectorAll('.btn-cart');
@@ -181,6 +181,7 @@
           }
         });
       </script>
+{% endif %}
       
 
 {% endblock %}

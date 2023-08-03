@@ -321,7 +321,7 @@
             </div>
           </div>
           
-   
+   {% if user_exists %}
         <script>
             document.addEventListener('DOMContentLoaded', function() {
               const toastTriggers = document.querySelectorAll('.forPop');
@@ -346,6 +346,7 @@
               }
             });
           </script>
+          {% endif %}
 
 
 
