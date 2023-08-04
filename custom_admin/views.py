@@ -45,10 +45,10 @@ def home(request):
         this_week = order.filter(date_created__range=[start_date_current_week, end_date_current_week])
         this_week_price = sum(i.total_price for i in this_week)
         this_week_price = round(this_week_price, 2)
-        current_year = timezone.now().year
-        this_year = order.filter(date_created__year = current_year)
-        this_year_price = sum(i.total_price for i in this_year)
-        this_year_price = round(this_year_price,2)
+        current_month = timezone.now().month
+        this_month = order.filter(date_created__month = current_month)
+        this_month_price = sum(i.total_price for i in this_month)
+        this_month_price = round(this_month_price,2)
         five_days_ago = current_date - timedelta(days=6)
         objects_last_5_days = order.filter(date_created__gte=five_days_ago)
         pending = order.filter(orderitems__order_status = 'Order Pending').distinct()
@@ -60,11 +60,11 @@ def home(request):
             order_data.append({'date':date.strftime('%Y-%m-%d'),'order_count':count})
         report = {
             'thisDay':this_day,
-            'thisYear':this_year,
+            'thismonth':this_month,
             'thisWeek':this_week,
             'dayPrice':this_day_price,
             'weekPrice':this_week_price,
-            'yearPrice':this_year_price,
+            'monthPrice':this_month_price,
             'order':order,
             'totalPrice':total_price,
             'pending':pending
