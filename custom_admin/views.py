@@ -46,6 +46,7 @@ def home(request):
         this_week_price = sum(i.total_price for i in this_week)
         this_week_price = round(this_week_price, 2)
         current_month = timezone.now().month
+        print(current_month)
         this_month = order.filter(date_created__month = current_month)
         this_month_price = sum(i.total_price for i in this_month)
         this_month_price = round(this_month_price,2)
