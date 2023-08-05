@@ -45,7 +45,7 @@
     <tbody>
         {% for item in order %}
       <tr>
-        <th scope="row">{{ forloop_counter }}</th>
+        <th scope="row">{{ forloop.counter }}</th>
         <td>{{ item.order_num }}</td>
         <td>{{ item.date_created }}</td>
         <td>{{ item.user.username }}</td>

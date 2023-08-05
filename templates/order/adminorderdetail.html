@@ -133,6 +133,29 @@
                         </div>   
                         <div class="col-md-6">
                             <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Age</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="invisibleInputBox" value="{{ item.varient }}">
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6" >
+                            <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Date Delivered</label>
+                            <div class="col-sm-9">
+                                {% if item.date_delivered  %}
+                                <input type="text" class="form-control" id="invisibleInputBox" value="{{ item.date_delivered }}">
+                                {% else %}
+                                <input type="text" class="form-control" id="invisibleInputBox" value="Not yet Delivered!">
+                                {% endif %}
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Order Status</label>
                                 <div class="col-sm-9">
                                       <form method = 'post' action="{% url 'statuschange' item.id %}" >
@@ -154,18 +177,6 @@
                             </div>
                         </div>
                     </div>
-                        <div  class="col-md-6" >
-                            <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Date Delivered</label>
-                            <div class="col-sm-9">
-                                {% if item.date_delivered  %}
-                                <input type="text" class="form-control" id="invisibleInputBox" value="{{ item.date_delivered }}">
-                                {% else %}
-                                <input type="text" class="form-control" id="invisibleInputBox" value="Not yet Delivered!">
-                                {% endif %}
-                            </div>
-                        </div>
-                        </div>
                     </div>
                     </div> 
                 </div>

@@ -72,7 +72,7 @@ def order(request):
         order.save()
         cartitems = cart.cartitems.all()
         for items in cartitems:
-            OrderDetail.objects.create(order = order,products = items.products,products_price = items.products.price,quantity = items.quantity) 
+            OrderDetail.objects.create(order = order,products = items.products,products_price = items.products.price,quantity = items.quantity,varient = items.varient) 
             items.products.stocks -= items.quantity
             items.products.save()      
         cart.delete()   

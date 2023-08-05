@@ -171,54 +171,47 @@
 
 
 <!-- Include Cropper.js library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+
 
 <script>
-    function handleImageField(imageInputId, imagePreviewId, closeButtonId, cropperContainerId) {
-        const imageInput = document.getElementById(imageInputId);
-        const imagePreview = document.getElementById(imagePreviewId);
-        const closeButton = document.getElementById(closeButtonId);
-        const cropperContainer = document.getElementById(cropperContainerId);
-        let cropper = null;
+  function handleImageField(imageInputId, imagePreviewId, closeButtonId) {
+      const storedImageData = localStorage.getItem(imageInputId);
+      const imagePreview = document.getElementById(imagePreviewId);
 
-        imageInput.addEventListener('change', function(event) {
-            const file = event.target.files[0];
+      if (storedImageData) {
+          imagePreview.src = storedImageData;
+      }
 
-            if (file) {
-                const reader = new FileReader();
+      document.getElementById(imageInputId).addEventListener('change', function(event) {
+          const fileInput = event.target;
+          const file = fileInput.files[0];
 
-                reader.onload = function(e) {
-                    if (cropper) {
-                        cropper.destroy();
-                    }
+          if (file) {
+              const reader = new FileReader();
 
-                    imagePreview.src = e.target.result;
-                    cropper = new Cropper(imagePreview, {
-                        aspectRatio: 1,
-                        viewMode: 1,
-                        zoomable: false,
-                        ready: function () {
-                            cropperContainer.classList.add('show');
-                        }
-                    });
+              reader.onload = function(e) {
+                  localStorage.setItem(imageInputId, e.target.result);
+                  imagePreview.src = e.target.result;
+              };
 
-                    closeButton.addEventListener('click', function() {
-                        cropperContainer.classList.remove('show');
-                        cropper.destroy();
-                    });
-                };
+              reader.readAsDataURL(file);
+          } else {
+              imagePreview.src = '#';
+              localStorage.removeItem(imageInputId);
+          }
+      });
 
-                reader.readAsDataURL(file);
-            } else {
-                imagePreview.src = '#';
-            }
-        });
-    }
+      document.getElementById(closeButtonId).addEventListener('click', function() {
+          localStorage.removeItem(imageInputId);
+          imagePreview.src = '#';
+      });
+  }
 
-    handleImageField('categoryImage1', 'imagePreview1', 'closeButton1', 'cropperContainer1');
-    handleImageField('categoryImage2', 'imagePreview2', 'closeButton2', 'cropperContainer2');
-    handleImageField('categoryImage3', 'imagePreview3', 'closeButton3', 'cropperContainer3');
+  handleImageField('categoryImage1', 'imagePreview1', 'closeButton');
+  handleImageField('categoryImage2', 'imagePreview2', 'closeButton');
+  handleImageField('categoryImage3', 'imagePreview3', 'closeButton');
+
+
 
 </script>
 
