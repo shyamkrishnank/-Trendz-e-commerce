@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from category.models import Category
-from .models import Products,ProductImage
+from .models import Products,ProductImage,Varient
 
 # Create your views here.
 def products(request):
@@ -13,7 +13,7 @@ def product_details(request,id):
         product = Products.objects.filter(category = id)
         category = Category.objects.all()
         current_category = Category.objects.get(id = id)
-        varient = Products.choice
+        varient = Varient.choice
         return render(request,'products/product_details.html',{'products':product,'category':category,'current':current_category,'varient':varient})
 
 def add_product(request,id):
@@ -26,14 +26,12 @@ def add_product(request,id):
             image1 = request.FILES.get('images1')
             image2 = request.FILES.get('images2')
             image3 = request.FILES.get('images3')
-            var = request.POST.get('varient')
+            var = request.POST.getlist('varient')
             discription = request.POST.get('discription')
             current = Products.objects.create(name=name,category=category,price = price1, original_price = price1 , stocks=stock, discription = discription)
-            for i in Products.choice:
-                if i[1] == var:
-                    current.varient = i[0]    
-                    current.save()  
-                    break            
+            for i in Varient.choice:
+                if i[1] in var:
+                    Varient.objects.create(product = current, varient = i[0])               
             ProductImage.objects.create(product = current,image = image1)
             ProductImage.objects.create(product = current,image = image2)
             ProductImage.objects.create(product = current,image = image3)
@@ -60,19 +58,21 @@ def edit_product(request,id):
             product.price = request.POST.get('price')
             product.original_price = request.POST.get('price')
             product.stocks = request.POST.get('stock')
+            var = request.POST.getlist('varient')
             if request.FILES.get('image'):
                 images = request.FILES.get('image')
                 img =ProductImage.objects.filter(product=product)
                 img.delete()
                 for image in images:
                     ProductImage.objects.create(product = product,image = image)
-            for i in Products.choice:
-                if i[1] == request.POST.get('varient'):
-                    product.varient = i[0]
             product.discription = request.POST.get('discription')
             product.save()
-            
-
+            check = Varient.objects.filter(product = product)
+            check.delete()
+            for i in Varient.choice:
+                if i[1] in var :
+                    Varient.objects.create(product = product, varient = i[0])
+                    
             return redirect('product_details',id)
 
 

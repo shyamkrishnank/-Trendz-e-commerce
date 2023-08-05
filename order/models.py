@@ -44,6 +44,7 @@ class OrderDetail(models.Model):
     )
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='orderitems')
     products = models.ForeignKey(Products, on_delete=models.CASCADE)
+    varient = models.CharField(max_length=30,default='6-10yr')
     products_price = models.DecimalField(default=0, max_digits=20,decimal_places=2)
     quantity = models.IntegerField()
     order_status = models.CharField(max_length=50,choices=order_choices,default='Order Confirmed')

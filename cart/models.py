@@ -20,6 +20,7 @@ class Cart(models.Model):
 class CartItems(models.Model):
     cart = models.ForeignKey(Cart,on_delete=models.CASCADE, related_name='cartitems')
     products = models.ForeignKey(Products,related_name="products", on_delete=models.CASCADE)
+    varient = models.CharField(max_length=20,default='6-10yr')
     quantity = models.IntegerField()
 
     @property

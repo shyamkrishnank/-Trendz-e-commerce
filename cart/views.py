@@ -5,6 +5,7 @@ from accounts.models import *
 from django.contrib.auth.models import User
 import razorpay
 from django.conf import settings
+from products.models import Varient
 
 
 # Create your views here.
@@ -38,7 +39,9 @@ def add_cart(request,id):
     if product.stocks > 0:
         product.stocks -= 1
         product.save()
-        cart_item = CartItems.objects.create(cart = cart,products = product,quantity = 1)
+        varient = product.varient.first()
+        print(varient.varient)
+        cart_item = CartItems.objects.create(cart = cart,products = product,quantity = 1,varient = varient.varient)
         cart_item.save()
         id = product.category.id
         return redirect('products',id)
@@ -46,6 +49,8 @@ def add_cart(request,id):
     return redirect('products',id)
 
 def add_cart1(request,id):
+    if request.method =='POST':
+        varient =  request.POST.get('varient')
     user = Users.objects.get(username = request.session['user_exists'] )
     product = Products.objects.get(id = id)
     try:
@@ -58,7 +63,7 @@ def add_cart1(request,id):
     if product.stocks > 0:
         product.stocks -=1
         product.save()
-        cart_item = CartItems.objects.create(cart = cart,products = product,quantity = 1)
+        cart_item = CartItems.objects.create(cart = cart,products = product,quantity = 1,varient = varient )
         cart_item.save()
         return redirect('product_detail', id)
     return redirect('product_detail', id)

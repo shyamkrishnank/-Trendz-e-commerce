@@ -65,9 +65,11 @@
                                     <td class="quantity-col">
 
                                         <div class="cart-product-quantity">
-                                            <a href="{% url 'quantity_decrement' items.id  %}" class="minus-btn" >-</a>
+                                            <!-- <a href="{% url 'quantity_decrement' items.id  %}" class="minus-btn" >-</a> -->
+                                            <a id="{{items.id}}" class="minus-btn cursor-pointer" >-</a>
                                             <input  id="quantity-input" class="quantity-input" value="{{ items.quantity }}" min="1" max="10" disabled >
-                                            <a href="{% url 'quantity_increment' items.id %}" class="plus-btn" >+</a>
+                                            <!-- <a href="{% url 'quantity_increment' items.id %}" class="plus-btn" >+</a> -->
+                                            <a id="{{items.id}}" class="plus-btn" >+</a>
                                       </div>     
                                     </td>
                                     <td class="total-col">{{ items.product_total }}</td>
@@ -103,7 +105,7 @@
                                 <tbody>
                                     <tr class="summary-subtotal">
                                         <td>Subtotal:</td>
-                                        <td>Rs.{{ main_cart.total_price }}</td>
+                                        <td>Rs.<span id="sub-total">{{ main_cart.total_price }}</span></td>
                                     </tr><!-- End .summary-subtotal -->
                                     <tr class="summary-shipping">
                                         <td>Shipping:</td>
@@ -130,7 +132,7 @@
                                    
                                     <tr class="summary-total">
                                         <td>Total:</td>
-                                        <td>Rs.{{ main_cart.total_price }}</td>
+                                        <td>Rs.<span id="cart-total">{{ main_cart.total_price }}</span></td>
                                     </tr><!-- End .summary-total -->
                                 </tbody>
                             </table><!-- End .table table-summary -->
@@ -152,4 +154,56 @@
                                
                             {% endif %}
   
+
+
+    <script>
+        const minusButtons = document.querySelectorAll('.minus-btn');
+        const cartTotal = document.getElementById('cart-total');
+        const subTotal = document.getElementById('sub-total');
+
+        for(const btn of minusButtons) {
+            btn.addEventListener('click', ()=>{
+                const inp = btn.parentElement.querySelector('input');
+                if(inp.value > 1) {
+                    updateQuantity('quantity_decrement/' + btn.id);
+                    const totalPriceTD = btn.parentElement.parentElement.parentElement.querySelector('.total-col');
+                    const singleProductPrice = +totalPriceTD.innerText / +inp.value;                    
+                    inp.value = +inp.value - 1;
+                    totalPriceTD.innerText = (+totalPriceTD.innerText - singleProductPrice).toFixed(2);
+                    subTotal.innerText = (+subTotal.innerText - singleProductPrice).toFixed(2);
+                    cartTotal.innerText = (+cartTotal.innerText - singleProductPrice).toFixed(2);
+                }
+            })
+        }
+        // quantity_increment
+        const plusButtons = document.querySelectorAll('.plus-btn');
+        for(const btn of plusButtons) {
+            btn.addEventListener('click', ()=> {
+                const inp = btn.parentElement.querySelector('input');
+                if(inp.value < 6) {
+                    updateQuantity('quantity_increment/' + btn.id);
+                    const totalPriceTD = btn.parentElement.parentElement.parentElement.querySelector('.total-col');
+                    const singleProductPrice = +totalPriceTD.innerText / +inp.value;                    
+                    inp.value = +inp.value + 1;
+                    totalPriceTD.innerText = (+totalPriceTD.innerText + singleProductPrice).toFixed(2);
+                    console.log(subTotal.innerText);
+                    subTotal.innerText = (+subTotal.innerText + singleProductPrice).toFixed(2);
+                    cartTotal.innerText = (+cartTotal.innerText + singleProductPrice).toFixed(2);
+                }
+            })
+        }
+
+        async function updateQuantity (query) {
+            const url = '/cart/' + query;
+            const option = {
+                method: 'GET',
+                headers: {
+                    'Content-Type' : 'application/json'
+                }
+            }
+            const response = await fetch(url, option);
+            if(response.ok) console.log("success");
+            else console.log("Error");
+        }
+    </script>
 {% endblock %}
