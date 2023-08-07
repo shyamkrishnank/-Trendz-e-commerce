@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from .models import Admin
 from accounts.models import Users
 from django.views.decorators.cache import never_cache
-from order.models import Order
+from order.models import Order,OrderDetail
 from django.utils import timezone
 from datetime import timedelta
 from django.db.models import Sum, F
@@ -53,6 +53,7 @@ def home(request):
         five_days_ago = current_date - timedelta(days=6)
         objects_last_5_days = order.filter(date_created__gte=five_days_ago)
         pending = order.filter(orderitems__order_status = 'Order Pending').distinct()
+        total_products = OrderDetail.objects.all().count()
         order_data = []
         for i in range(0,7):
             date = current_date - timedelta(days=6-i)
@@ -68,6 +69,7 @@ def home(request):
             'monthPrice':this_month_price,
             'order':order,
             'totalPrice':total_price,
+            'total_product':total_products,
             'pending':pending
         }
         return render(request,'custom_admin/home.html',{'report':report,'order_data':order_data})

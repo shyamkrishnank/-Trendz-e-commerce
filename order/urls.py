@@ -14,5 +14,7 @@ urlpatterns = [
     path('orderfilter/', views.filter, name= 'filter'),
     path('return_reason/<int:id>', views.return_reason, name = 'return_reason'),
     path('returnconfirmation/', views.return_confirmation, name = 'return_confirmation'),
+    path('report/', views.report, name = 'report'),
+    path('reportFilter/',views.report_filter, name = 'reportFilter')
    
 ]

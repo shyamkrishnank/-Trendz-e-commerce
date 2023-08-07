@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from django.shortcuts import render,redirect
 from accounts.models import *
 from .models import Order,OrderDetail,Returned
@@ -114,6 +115,21 @@ def return_confirmation(request):
         order.save()
         r_id = r_obj.return_num
         return render(request,'order/return/returnconfirm.html',{'r_id':r_id})
+
+def report(request):
+    orders = OrderDetail.objects.all().order_by('-order__date_created')
+    earliest_date = OrderDetail.objects.earliest('order__date_created').order.date_created
+    fromdate = earliest_date.strftime('%Y-%m-%d')
+    todate = timezone.now().strftime('%Y-%m-%d')
+    return render(request,'order/report/report.html',{'orders':orders,'fromdate':fromdate,'todate':todate})
+
+def report_filter(request):
+    date_format = '%Y-%m-%d'
+    fromdate = request.POST.get('fromDate')
+    todate = request.POST.get('toDate')
+    todated = datetime.strptime(todate, date_format) + timedelta(days=1)
+    orders = OrderDetail.objects.filter(order__date_created__range=(fromdate,todated)).order_by('-order__date_created')
+    return render(request,'order/report/report.html',{'orders':orders,'fromdate':fromdate,'todate':todate})
 
         
 

@@ -1,6 +1,9 @@
 {% extends 'adminBase.html' %}
 {% block order_active %} active {%  endblock %}
 {% block contant %}
+<div class="nav justify-content-end">
+ <a href="{% url 'report' %}"><button type="button"  class="btn btn-outline-secondary">Report</button></a> 
+</div>
 <div class="container mb-3">
   <form action="{% url 'filter' %}" method="POST" id="myForm"> <!-- Specify the action and method for the form -->
     {% csrf_token %}
