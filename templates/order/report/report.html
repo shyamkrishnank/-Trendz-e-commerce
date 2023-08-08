@@ -4,7 +4,13 @@
 <div class="container mb-3">
     <div class="row justify-content-md-end">
         <div class="col-auto mr-auto">
-            <a href="#" class="btn btn-secondary">Download</a>
+            <form method="POST" action="{% url 'reportDownload' %}" >
+                {% csrf_token %}
+                <input  value ='{{fromdate}}'  name ="fromDate"  hidden>
+                <input  value ='{{todate}}'  name ="toDate"  hidden>
+                <input value="{{orders}}" name="orders" hidden >
+                <button type="submit" class="btn btn-outline-primary">Download</button>
+            </form>
         </div>
         <form class="form-inline" method="POST" action="{% url 'reportFilter' %}" >
             {% csrf_token %}

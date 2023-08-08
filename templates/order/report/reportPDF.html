@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .center-text {
+            text-align: center;
+        }
+        .left-text {
+            text-align: left;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .table th,
+        .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .table th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="center-text">
+            <h2>Trendz E-commerce</h2>
+        </div>
+        
+            <h3>Order Report</h3>
+            <p class="left-text">From: {{ fromdate }}</p>
+            <p class="left-text">To: {{ todate }}</p>
+        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Order Number</th>
+                    <th>Date Created</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>User</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in data %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ order.order.order_num }}</td>
+                    <td class="center-text">{{ order.order.date_created|date:"Y-m-d" }}</td>
+                    <td>{{ order.products.name }}</td>
+                    <td class="center-text">{{ order.quantity }}</td>
+                    <td>{{ order.order.user.username }}</td>
+                    <td class="center-text">{{ order.total_price }}</td>
+                    <td>{{ order.order_status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+

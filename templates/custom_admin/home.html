@@ -85,8 +85,8 @@
       <div class="mt-5">
       <p>Total Orders : {{ report.order.count }}</p>
       <p>Total Products Delivered :{{ report.total_product }}</p>
-      <p>Revenue Rate(month) : {{ report.monthPrice }} </p>
-
+      <p >Revenue Rate(month) : {{ report.monthPrice }} </p>
+      <a  href="{% url 'report' %}"><button type="button" class="btn btn-outline-info">Report Page</button></a>
     </div>
 
 

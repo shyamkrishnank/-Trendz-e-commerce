@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from accounts.models import *
 from .models import Order,OrderDetail,Returned
@@ -6,7 +7,7 @@ from cart.models import Cart
 from django.utils import timezone
 from django.views.decorators.cache import never_cache
 from decimal import Decimal
-
+from xhtml2pdf import pisa
 
 
 def adminOrders(request):
@@ -130,6 +131,26 @@ def report_filter(request):
     todated = datetime.strptime(todate, date_format) + timedelta(days=1)
     orders = OrderDetail.objects.filter(order__date_created__range=(fromdate,todated)).order_by('-order__date_created')
     return render(request,'order/report/report.html',{'orders':orders,'fromdate':fromdate,'todate':todate})
+
+def report_download(request):
+    date_format = '%Y-%m-%d'
+    fromdate = request.POST.get('fromDate')
+    todate = request.POST.get('toDate')
+    todated = datetime.strptime(todate, date_format) + timedelta(days=1)
+    orders = OrderDetail.objects.filter(order__date_created__range=(fromdate,todated)).order_by('-order__date_created')
+    template = 'order/report/reportPDF.html'
+    context = {'data': orders,'fromdate':fromdate,'todate':todate}  # Replace with your actual context data
+    html_string = render(request, template, context).content
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="Report.pdf"'
+
+    pisa_status = pisa.CreatePDF(html_string, dest=response)
+    if pisa_status.err:
+        return HttpResponse('PDF generation error')
+
+    return response
+    # return render(request,'order/report/reportPDF.html',{'data':orders,'fromdate':fromdate,'todate':todate})
 
         
 
