@@ -85,6 +85,14 @@
               <span class="menu-title">Offers</span>
             </a>
           </li>
+          <li class="nav-item menu-items {% block coupon_active %} {% endblock %}">
+            <a class="nav-link" href="{% url 'adminCoupon' %}">
+              <span class="menu-icon">
+                <i class="mdi mdi-table-large"></i>
+              </span>
+              <span class="menu-title">Coupon</span>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- partial -->

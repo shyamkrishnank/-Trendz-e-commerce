@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 import razorpay
 from django.conf import settings
 from products.models import Varient
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -70,13 +71,15 @@ def add_cart1(request,id):
 
 def remove_cartitem(request,id):
     cartitem = CartItems.objects.get(id = id)
+    cartitem.products.stocks += 1
+    cartitem.products.save()
     cartitem.delete()
     return redirect('cart')
 
 def quantity_increment(request,id):
     cartitems = CartItems.objects.get(id = id)
     if cartitems.products.stocks <=1:
-        return redirect('cart')
+        return JsonResponse('Out of Stock',status = 400,safe=False )
     if cartitems.quantity == 6:
         return redirect('cart')
     cartitems.products.stocks -= 1
