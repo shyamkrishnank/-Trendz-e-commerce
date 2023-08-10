@@ -71,6 +71,7 @@ def order(request):
             order.payment_type = 'ONLINE PAYMENT'
         else:
             pass
+        order.payed_amount = cart.last_price
         order.save()
         cartitems = cart.cartitems.all()
         for items in cartitems:

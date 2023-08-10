@@ -26,12 +26,6 @@
     <div class="page-content">
         <div class="checkout">
             <div class="container">
-                <div class="checkout-discount">
-                    <form action="#">
-                        <input type="text" class="form-control" required id="checkout-discount-input">
-                        <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label>
-                    </form>
-                </div><!-- End .checkout-discount -->
                 <form  method="POST" id="order_form" action="{% url 'order' %}">
                     {% csrf_token %}
                     <div class="row">
@@ -128,10 +122,19 @@
                                             <td>Shipping:</td>
                                             <td>Free shipping</td>
                                         </tr>
+                                        {% if cart.last_price != cart.total_price %}
                                         <tr class="summary-total">
                                             <td>Total:</td>
-                                            <td>{{cart.total_price}} </td>
+                                            <td class="text-center" ><del class="mr-1">{{cart.total_price}} </del>{{ cart.last_price }}</td>
+                                            <td> <p class="text-success ml-1 ">coupon applied!</p></td>
                                         </tr><!-- End .summary-total -->
+                                        {% else %}
+                                        <tr class="summary-total">
+                                            <td>Total:</td>
+                                            <td>{{cart.last_price}} </td>
+                                        </tr><!-- End .summary-total -->
+                                        {% endif %}
+
                                     </tbody>
                                 </table><!-- End .table table-summary -->
 
@@ -206,15 +209,76 @@
                                         </div><!-- End .collapse -->
                                     </div><!-- End .card -->
                                 </div><!-- End .accordion -->
+                                  
                             </div><!-- End .summary -->
+                           
                         </aside><!-- End .col-lg-3 -->
                         {% endif %}
                     </div><!-- End .row -->
                     <input type="hidden" name="payment_method"  id="selected_payment"  value="">
                 </form>
+                <div class="row justify-content-center">
+                    <div class="col-4">
+                    <form action="{% url 'applyCoupon' cart.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="input-group  align-items-center">
+                            <input type="text" name="coupon" class="form-control form-control-sm" placeholder="Have coupon?" required>
+                            <div class="input-group-append pb-1">
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-4 ">
+                       <p>Available Coupon ? <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">Click Here</a></p>
+                    </div>
+                </div>
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Available Coupons<h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {% if coupons %}
+                            {% for coupon in coupons %}
+                            <div class="card justify-content-center">
+                                <div class="card-body justify-content-center">
+                                     <div class="row">
+                                        <div class="col">{{forloop.counter}} </div>
+                                        <div class="col">{{ coupon.name }}</div>
+                                        <div class="col">Code:<span class="text-success">{{ coupon.coupon_code }}</span></div>
+                                        <div class="col">Discount : {{ coupon.discount }}%</div>
+                                     </div>
+                                </div>
+                              </div>
+                            {% endfor %}
+                            {% else %}
+                            <div class="card">
+                                <div class="card-body">
+                                     Sorry,Coupons are not available!
+                                </div>
+                            </div>
+                            {% endif %}
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
             </div><!-- End .container -->
         </div><!-- End .checkout -->
     </div><!-- End .page-content -->
+   
+
 </main><!-- End .main -->
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
