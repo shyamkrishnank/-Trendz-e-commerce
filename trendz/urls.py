@@ -28,6 +28,7 @@ urlpatterns = [
     path('cart/',include('cart.urls')),
     path('order/',include('order.urls')),
     path('offer/', include('offer.urls')),
+    path('coupon/',include('coupon.urls')),
 ]
 
 

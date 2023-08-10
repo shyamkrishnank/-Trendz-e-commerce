@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 import razorpay
 from django.conf import settings
 from products.models import Varient
+from coupon.models import Coupon
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -70,13 +72,15 @@ def add_cart1(request,id):
 
 def remove_cartitem(request,id):
     cartitem = CartItems.objects.get(id = id)
+    cartitem.products.stocks += 1
+    cartitem.products.save()
     cartitem.delete()
     return redirect('cart')
 
 def quantity_increment(request,id):
     cartitems = CartItems.objects.get(id = id)
     if cartitems.products.stocks <=1:
-        return redirect('cart')
+        return JsonResponse('Out of Stock',status = 400,safe=False )
     if cartitems.quantity == 6:
         return redirect('cart')
     cartitems.products.stocks -= 1
@@ -107,12 +111,15 @@ def checkout(request):
         related_address - None
     wallet_amount = Wallet.objects.get(user = user).amount
     cart = Cart.objects.get(user = user)
+
+    if cart.last_price == 0:
+         cart.last_price = cart.total_price
+
     client = razorpay.Client(auth=(settings.RAZOR_KEY, settings.KEY_SECRET))
-    payment = client.order.create({'amount':float(cart.total_price*100),'currency':'INR', 'payment_capture':1})
+    payment = client.order.create({'amount':float(cart.last_price*100),'currency':'INR', 'payment_capture':1})
+    coupons = Coupon.objects.filter(min_rate__lte=cart.total_price , max_rate__gte=cart.total_price,is_active = True)
     cartitems = cart.cartitems.all() 
-    return render(request, 'cart/checkout.html',{'main_address':main_address,'wallet':wallet_amount,'related_address':related_address,'cart':cart,'cartitems':cartitems,'payment':payment})
-
-
+    return render(request, 'cart/checkout.html',{'main_address':main_address,'wallet':wallet_amount,'related_address':related_address,'coupons':coupons,'cart':cart,'cartitems':cartitems,'payment':payment})
 def add_checkout_address(request):
     user_exists = None
     if 'user_exists' in request.session:

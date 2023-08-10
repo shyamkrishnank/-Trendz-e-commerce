@@ -1,0 +1,197 @@
+{% extends 'adminBase.html' %}
+{%block coupon_active %} active {%  endblock %}
+{% block contant %}
+<div class="page-header">
+    <h3 class="page-title"> Coupons </h3>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+            +Add Coupon
+          </button></a></li>
+      </ol>
+    </nav>
+</div>
+
+
+<div class="modal fade" id ="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">COUPON</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="{% url 'addCoupon' %}"  id="offerForm" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-6">
+                <label for="categoryName">Coupon Name:</label><br>
+                <input type="text" id='couponName' name="name" required>  </div>
+                
+              </div>
+
+              <div class="row">
+                <div class="col-6">
+                <label for="categoryName">Coupon Code:</label><br>
+                <input type="text" id='couponCode' name="code" required>  </div>
+                
+              </div>
+
+              <div class=" row mt-1"  >
+                <div class="col-6">  <label for="categoryName">Discount percentage:</label><br>
+                    <input type="text" id='discount' name="discount"  required> </div> 
+                <div class="col-6"> </div>
+                </div>
+
+             <div class="row  mt-1">
+                <div class="col-6">  <label for="categoryName">Minimum Rate</label><br>
+                    <input type="text" id='min' name="min"   required> </div> 
+                    <div class="col-6">  <label for="categoryName">Maximum Rate</label><br>
+                        <input type="text" id='max' name="max"   required> </div> 
+             </div>
+
+             <div class="row mt-1" >
+                <div class="col-6" > 
+                    <label for="categoryName">Start Date:</label><br>
+                    <input type="date" id='couponForm' name="startDate"  required> 
+                </div>
+                <div class="col-6" >
+                    <label for="categoryName">End Date:</label><br>
+                    <input type="date" id='couponForm' name="endDate"  required>
+                </div>
+             </div>
+             
+        </div>
+        <div class="modal-footer">
+          <button id="close-coupon-form" type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+          <button type="submit" class="btn btn-primary">Apply Offer</button>
+        </form>
+        </div>
+      </div>
+    </div>
+    </div>
+
+
+{{message}}
+
+<table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">No.</th>
+        <th scope="col">Name</th>
+        <th scope="col">Discount</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">End Date</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for i in coupons %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ i.name }}</td>
+        <td>{{ i.discount }}%</td>
+        <td>{{ i.start_date }}</td>
+        <td>{{ i.end_date }}</td>
+        {% if i.is_active %}
+        <td><a href="{% url 'couponStatus' i.id %}"><button type="button"  class="btn btn-danger">INACTIVE</button></a></td>
+        {% else %}
+         <td><a href="{% url 'couponStatus' i.id %}"><button type="button"  class="btn btn-success">ACTIVATE</button></a></td> 
+        {% endif %}
+        <td> <a  href="" data-toggle="modal" data-target="#exampleModalLong{{i.id}}">
+             Coupon Details
+        </a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+    <!-- Modal view-->
+    {% for i in coupons %}
+    <div class="modal fade" id="exampleModalLong{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">{{ i.name }}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <form action="{% url 'editCoupon' i.id %}" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-6">
+                    <label for="categoryName">Coupon Name:</label><br>
+                    <input type="text" id="categoryName" name="name" value="{{i.name}}" placeholder="{{i.name}}" >  </div>
+                    <div class="col-6">
+                     <label for="categoryImage">Coupon Code:</label><br>
+                     <input type="text" id="categoryName" name="code" value="{{i.coupon_code}}" placeholder="{{i.coupon_code}}" >  
+                     </div>
+                  </div>
+
+                  <div class=" row mt-1"  >
+                    <div class="col-6">  <label for="categoryName">Discount percentage:</label><br>
+                        <input type="text" id="categoryName" name="discount" placeholder="{{ i.discount }}" value="{{i.discount}}" > </div> 
+                    <div class="col-6"> </div>
+                    </div>
+                  <div class=" row mt-1"  >
+                      <div class="col-6">  <label for="categoryName">Minimum Rate</label><br>
+                          <input type="text" id="categoryName" name="min" placeholder="{{ i.min_rate }}" value="{{i.min_rate}}" > </div> 
+
+                      <div class="col-6">  <label for="categoryName">Maximum Rate</label><br>
+                        <input type="text" id="categoryName" name="max" placeholder="{{ i.max_rate }}" value="{{i.max_rate}}" > 
+                    </div>
+                      </div>
+    
+                 <div class="row mt-1" >
+                    <div class="col-6" > 
+                        <label for="categoryName">Start Date:</label><br>
+                        <input type="date" name="startDate" placeholder="Start date" value="{{i.start_date|date:'Y-m-d'}}" > 
+                    </div>
+                    <div class="col-6" >
+                        <label for="categoryName">End Date:</label><br>
+                        <input type="date" name="endDate" placeholder="Start date" value="{{i.end_date|date:'Y-m-d'}}"  > 
+                    </div>
+                 </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Edit Offer</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+
+
+
+
+
+
+
+
+
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const offerForm = document.getElementById('offerForm');
+    
+            var modal = new bootstrap.Modal(document.getElementById('exampleModalCenter'));
+    
+            // modal._element.addEventListener('hidden.modal', function () {
+            //     // Reset the form when the modal is hidden
+            // });
+
+
+            const closeButton = document.getElementById('close-coupon-form');
+            closeButton.addEventListener("click", () => {
+                offerForm.reset();
+            })
+
+        });
+</script>
+    
+
+{% endblock %}

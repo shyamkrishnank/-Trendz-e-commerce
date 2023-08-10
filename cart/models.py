@@ -8,6 +8,8 @@ from products.models import Products
 class Cart(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='cart')
     created_date = models.DateTimeField(auto_now=True)
+    last_price = models.DecimalField(default=0.00,max_digits=10,decimal_places=2)
+  
 
     @property
     def total_price(self):

@@ -71,6 +71,7 @@ def order(request):
             order.payment_type = 'ONLINE PAYMENT'
         else:
             pass
+        order.payed_amount = cart.last_price
         order.save()
         cartitems = cart.cartitems.all()
         for items in cartitems:
@@ -137,7 +138,7 @@ def report_download(request):
     fromdate = request.POST.get('fromDate')
     todate = request.POST.get('toDate')
     todated = datetime.strptime(todate, date_format) + timedelta(days=1)
-    orders = OrderDetail.objects.filter(order__date_created__range=(fromdate,todated)).order_by('-order__date_created')
+    orders = OrderDetail.objects.filter(order__date_created__range=(fromdate,todated)).order_by('order__date_created')
     template = 'order/report/reportPDF.html'
     context = {'data': orders,'fromdate':fromdate,'todate':todate}  # Replace with your actual context data
     html_string = render(request, template, context).content
