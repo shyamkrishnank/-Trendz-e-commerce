@@ -32,6 +32,27 @@
    
    <!-- Main CSS File -->
    <link rel="stylesheet" href="{% static 'accounts/assets/css/style.css' %}">
+   <style>
+    .message-container {
+    position: relative; /* or position: absolute; */
+    font-size: large;
+    color: aliceblue;
+    top: 2vh;
+    right: 0;
+    width: 100%;
+    background-color: rgba(190, 99, 99, 0.9); /* Semi-transparent white background */
+    padding: 10px;
+    z-index: 1000; /* Higher value to ensure it's above other content */
+}
+.close-icon {
+    position: absolute;
+    color: black;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}
+
+   </style>
 </head>
 <body>
     <div class="header">
@@ -48,7 +69,7 @@
                             {% else %}
                             <li><a href="" onclick="return confirm('You have to login to have a wallet!')" > My Wallet </a></li>
                             {% endif %}
-                            <li><a href="#">About Us</a></li>
+                            <li><a href="{% url 'aboutus' %}">About Us</a></li>
                             <li><a href="#">Contact Us</a></li>
                             {% if user_exists %}
                             <li> <a href="{% url 'user_profile' %}"><span class=“text-bold” >{{ user_exists }}</span> </a></li>
@@ -61,6 +82,7 @@
             </div><!-- End .header-right -->
         </div><!-- End .container -->
     </div><!-- End .header-top -->
+   
  
 
     <div class="header-middle sticky-header">
@@ -123,11 +145,16 @@
                         </li>
                         <li>
                             <a href="#" class="sf-with-ul">Elements</a>
-
+                        </li>
                     </ul><!-- End .menu -->
                 </nav><!-- End .main-nav -->
             </div><!-- End .header-left -->
-
+            {% if message %}
+            <div class="message-container text-center">
+                <span class="close-icon">X</span>
+                {{message}}
+            </div>
+            {% endif %}
             <div class="header-right">
                 <div class="header-search">
                     <a href="#" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a>
@@ -237,6 +264,19 @@
 
 
          <!-- Plugins JS File -->
+         <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const closeIcons = document.querySelectorAll('.close-icon');
+    
+             closeIcons.forEach(closeIcon => {
+                 closeIcon.addEventListener('click', function () {
+            const messageContainer = this.closest('.message-container');
+            messageContainer.style.display = 'none';
+        });
+    });
+});
+        
+         </script>
     <script src="{% static 'accounts/assets/js/jquery.min.js' %}"></script>
     <script src="{% static 'accounts/assets/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'accounts/assets/js/jquery.hoverIntent.min.js' %}"></script>

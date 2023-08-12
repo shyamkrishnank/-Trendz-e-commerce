@@ -31,7 +31,7 @@
     <div class="toolbox">
         <div class="toolbox-right">
             <div class="toolbox-info">
-                Showing <span>{{ count }} of {{ count }}</span> Products
+                Showing <span> 6 of {{ count }}</span> Products
             </div><!-- End .toolbox-info -->
         </div><!-- End .toolbox-left -->
 
@@ -52,7 +52,7 @@
     <div class="products mb-3 mx-auto">
         <div class=" container-fluid row "style="padding-left: 23vh;">
 
-        {% for i in products %}
+        {% for i in page %}
             <div class="col-6 col-md-4 col-lg-4 ">
                 <div class="product product-7 ">
                     <figure class="product-media">
@@ -124,27 +124,47 @@
             </div><!-- End .col-sm-6 col-lg-4 -->
             {% endfor %}
 
-     
+            <!-- <div class="pagination">
+                <span class="step-links">
+                    {% if page.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page.previous_page_number }}">previous</a>
+                    {% endif %}
+                    
+                    <span class="current">
+                        Page {{ page.number }} of {{ page.paginator.num_pages }}.
+                    </span>
+                    
+                    {% if page.has_next %}
+                        <a href="?page={{ page.next_page_number }}">next</a>
+                        <a href="?page={{ page.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div> -->
 
 
-    <!-- <nav aria-label="Page navigation">
+     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
+            {% if page.has_previous %}
+            <li class="page-item ">
+                <a class="page-link page-link-prev" href="?page={{ page.previous_page_number }}" aria-label="Previous" tabindex="-1" aria-disabled="true">
                     <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
                 </a>
             </li>
-            <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            {% endif %}
+            <li class="page-item " aria-current="page"><a class="page-link" href="?page=1">1</a></li>
+            <li class="page-item"><a class="page-link" href="?page=2">2</a></li>
+            <li class="page-item"><a class="page-link" href="?page=3">3</a></li>
             <li class="page-item-total">of 6</li>
+            {% if page.has_next %}
             <li class="page-item">
                 <a class="page-link page-link-next" href="#" aria-label="Next">
                     Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
                 </a>
             </li>
+            {% endif %}
         </ul>
-    </nav> -->
+    </nav> 
 </div>
     </div>
 

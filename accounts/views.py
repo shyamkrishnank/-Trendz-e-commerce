@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from category.models import Category
 from products.models import Products,ProductImage
 from order.models import OrderDetail
+from django.core.paginator import Paginator
 
 # Create your views here.
 # -----------------------------------------------------home----------
@@ -119,8 +120,12 @@ def shop(request):
 def products(request,id):
     category = Category.objects.all()
     products = Products.objects.filter(category = Category.objects.get(id = id))
+    items_per_page = 6  # Number of items per page
+    paginator = Paginator(products, items_per_page)  # Create a Paginator instance
+    page_number = request.GET.get('page')  # Get the current page number from query parameters
+    page = paginator.get_page(page_number)  # Get the Page object for the current page
     count = products.count()
-    return render(request,'accounts/products.html',{'products':products,'count':count,'category':category})
+    return render(request,'accounts/products.html',{'page':page,'count':count,'category':category})
 
 def product_detail(request,id):
     category = Category.objects.all()
@@ -240,13 +245,20 @@ def delete_address(request,id):
     return redirect('address')
 
 def shop(request):
-    products = Products.objects.order_by('?')[:9]
+    products = Products.objects.order_by('?')
     category = Category.objects.all()
-    return render(request,'accounts/products.html',{'products':products,'count':9,'category':category})
-
+    items_per_page = 6  # Number of items per page
+    paginator = Paginator(products, items_per_page)  # Create a Paginator instance
+    page_number = request.GET.get('page')  # Get the current page number from query parameters
+    page = paginator.get_page(page_number)  # Get the Page object for the current page
+    return render(request,'accounts/products.html',{'page':page,'count':9,'category':category})
+    
 
 def wallet(request):
     return render(request,'accounts/wallet.html')
+
+def aboutus(request):
+    return render(request,'accounts/aboutus.html')
 
 
 
