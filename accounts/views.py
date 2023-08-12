@@ -254,9 +254,11 @@ def shop(request):
     return render(request,'accounts/products.html',{'page':page,'count':9,'category':category})
     
 
-
 def wallet(request):
     return render(request,'accounts/wallet.html')
+
+def aboutus(request):
+    return render(request,'accounts/aboutus.html')
 
 
 

@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from accounts.models import *
+from coupon.models import Coupon,CouponUser
 from .models import Order,OrderDetail,Returned
 from cart.models import Cart
 from django.utils import timezone
@@ -76,8 +77,10 @@ def order(request):
         cartitems = cart.cartitems.all()
         for items in cartitems:
             OrderDetail.objects.create(order = order,products = items.products,products_price = items.products.price,quantity = items.quantity,varient = items.varient) 
-            items.products.stocks -= items.quantity
-            items.products.save()      
+            items.products.save()   
+        coupon = Coupon.objects.get(id = request.session['coupon'])
+        del request.session['coupon']
+        CouponUser.objects.create(coupons = coupon , user = user)   
         cart.delete()   
         return redirect('ordersuccess',order.order_num)   
         

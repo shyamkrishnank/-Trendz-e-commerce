@@ -14,12 +14,15 @@ from django.http import JsonResponse
 
 def cart(request):
     user = Users.objects.get(username = request.session['user_exists'])
+    if 'message' in request.session:
+        del request.session['message']
     try:
         user_cart = Cart.objects.get(user = user)
+        user_cart.is_coupon = False
+        user_cart.save()
         cart1 = user_cart.cartitems.all()
         if 'cartid' not in request.session:
             request.session['cartid'] = user_cart.id
-        total = 0
     except:
          user_cart = None
          cart1 = None 
@@ -100,6 +103,10 @@ def quantity_decrement(request,id):
     return redirect ('cart')
 
 def checkout(request):
+    if 'message' in request.session:    
+        message = request.session['message']
+    else:
+        message = None
     user = Users.objects.get(username = request.session['user_exists'])
     try:
         related_address = Address.objects.filter(Q(user = user) & Q(current = False) & Q(active = True))
@@ -112,14 +119,16 @@ def checkout(request):
     wallet_amount = Wallet.objects.get(user = user).amount
     cart = Cart.objects.get(user = user)
 
-    if cart.last_price == 0:
-         cart.last_price = cart.total_price
+    if cart.is_coupon == False:
+        cart.last_price = cart.total_price
+        cart.save()
 
     client = razorpay.Client(auth=(settings.RAZOR_KEY, settings.KEY_SECRET))
     payment = client.order.create({'amount':float(cart.last_price*100),'currency':'INR', 'payment_capture':1})
     coupons = Coupon.objects.filter(min_rate__lte=cart.total_price , max_rate__gte=cart.total_price,is_active = True)
     cartitems = cart.cartitems.all() 
-    return render(request, 'cart/checkout.html',{'main_address':main_address,'wallet':wallet_amount,'related_address':related_address,'coupons':coupons,'cart':cart,'cartitems':cartitems,'payment':payment})
+    return render(request, 'cart/checkout.html',{'message':message,'main_address':main_address,'wallet':wallet_amount,'related_address':related_address,'coupons':coupons,'cart':cart,'cartitems':cartitems,'payment':payment})
+
 def add_checkout_address(request):
     user_exists = None
     if 'user_exists' in request.session:

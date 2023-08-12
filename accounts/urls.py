@@ -20,7 +20,8 @@ urlpatterns=[
     path('edit_address/<int:id>/', views.edit_address, name = 'edit_address'),
     path('delete_adddress/<int:id>', views.delete_address, name = 'delete_address'),
     path('wallet/', views.wallet, name = 'wallet'),
-    path('shop/', views.shop, name = 'shop')
+    path('shop/', views.shop, name = 'shop'),
+    path('aboutus/', views.aboutus, name = 'aboutus')
    
 
 
