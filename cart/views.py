@@ -126,6 +126,8 @@ def checkout(request):
     client = razorpay.Client(auth=(settings.RAZOR_KEY, settings.KEY_SECRET))
     payment = client.order.create({'amount':float(cart.last_price*100),'currency':'INR', 'payment_capture':1})
     coupons = Coupon.objects.filter(min_rate__lte=cart.total_price , max_rate__gte=cart.total_price,is_active = True)
+    if coupons is None:
+        coupons = None
     cartitems = cart.cartitems.all() 
     return render(request, 'cart/checkout.html',{'message':message,'main_address':main_address,'wallet':wallet_amount,'related_address':related_address,'coupons':coupons,'cart':cart,'cartitems':cartitems,'payment':payment})
 

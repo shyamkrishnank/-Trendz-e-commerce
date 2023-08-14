@@ -261,5 +261,7 @@ def aboutus(request):
     return render(request,'accounts/aboutus.html')
 
 
+    
+
 
     

@@ -11,6 +11,7 @@
            {{order.address.state}}
             </p> 
             <p class="pt-2"><span class="text-success">Date of order:</span>{{ order.date_created.date }}</p>
+            <a href="{% url 'invoice' order.id %}"><button type="button" class="btn btn-outline-success">Invoice</button></a>
     </div><!-- End .card-body -->
   
 

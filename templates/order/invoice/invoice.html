@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .invoice {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+        address {
+            font-style: normal;
+            margin: 0;
+            padding: 5px 0;
+        }
+        img {
+            max-width: 100px;
+            margin: 0 auto;
+            display: block;
+        }
+        article {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+        }
+        .cut, .add {
+            font-weight: bold;
+            cursor: pointer;
+        }
+        aside h1 {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice">
+        <header>
+            <h1>Invoice</h1>
+            <address contenteditable>
+               <h3>Trendz E-commerce</h3><br>
+            </address>
+        </header>
+        <article>
+        
+            <address contenteditable>
+                BILLING ADDRESS<br><br>
+                {{ order.address.fullname}}<br>
+                {{order.address.address1 }}<br>
+                {{order.address.city}}
+                {{order.address.state}}<br>
+                {{order.address.postalcode}}<br>
+                {{order.address.country}}<br>
+                Ph:{{order.user.phone}}
+            </address>
+            <table>
+                <tr>
+                    <th>Invoice #</th>
+                    <td>{{order.order_num}}</td>
+                </tr>
+                <tr>
+                    <th>Date,Time</th>
+                    <td>{{order.date_created}}</td>
+                </tr>
+            </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Unit Rate</th>
+                        <th>Offer Rate</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Order Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in order.orderitems.all %}
+                    <tr>
+                        <td><a class="cut"></a>{{ i.products.name }}</td>
+                        <td>{{ i.products.price }}</td>
+                        <td>{{ i.products_price}}</td>
+                        <td>{{ i.quantity }}</td>
+                        <td>{{ i.total_price }}</td>
+                        <td>{{i.order_status}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <table>
+                <tr>
+                    <th>Total</th>
+                    <td>Rs.{{order.total_price}}</td>
+                </tr>
+                <tr>
+                    <th>Amount Paid</th>
+                    <td>Rs.{{order.payed_amount}}</td>
+                </tr>
+            </table>
+        </article>
+        <aside>
+                DECLARATION *<br>      
+                The goods sold are intended for end user consumption and not for resale..
+            </div>
+        </aside>
+    </div>
+</body>
+</html>
