@@ -130,7 +130,7 @@ def products(request,id):
 def product_detail(request,id):
     category = Category.objects.all()
     main_product = Products.objects.get(id = id)
-    related_products = Products.objects.exclude(id = id )
+    related_products = Products.objects.exclude(id = id )[:4]
     return render(request,'accounts/product_details.html',{'main_product':main_product,'related_products':related_products,'category':category})
 
 # ------------------------------------------------------userprofile --------------------
@@ -260,6 +260,8 @@ def wallet(request):
 def aboutus(request):
     return render(request,'accounts/aboutus.html')
 
+
+    
 
 
     

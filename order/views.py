@@ -49,6 +49,8 @@ def status_change(request,id):
             return_ = order.returned.first()
             return_.date_returned = timezone.now()
             return_.save()
+        if status == 'Order Cancelled':
+            order.products_price = 0
         order.order_status = status
         order.save()
         return redirect('adminorderdetails',order.order.id)
@@ -77,10 +79,11 @@ def order(request):
         cartitems = cart.cartitems.all()
         for items in cartitems:
             OrderDetail.objects.create(order = order,products = items.products,products_price = items.products.price,quantity = items.quantity,varient = items.varient) 
-            items.products.save()   
-        coupon = Coupon.objects.get(id = request.session['coupon'])
-        del request.session['coupon']
-        CouponUser.objects.create(coupons = coupon , user = user)   
+            items.products.save()  
+        if 'coupon' in request.session: 
+            coupon = Coupon.objects.get(id = request.session['coupon'])
+            del request.session['coupon']
+            CouponUser.objects.create(coupons = coupon , user = user)   
         cart.delete()   
         return redirect('ordersuccess',order.order_num)   
         
@@ -155,6 +158,18 @@ def report_download(request):
 
     return response
     # return render(request,'order/report/reportPDF.html',{'data':orders,'fromdate':fromdate,'todate':todate})
+
+def invoice(request,id):
+    order = Order.objects.get(id = id)
+    context = {'order':order}
+    template = 'order/invoice/invoice.html'
+    html_string = render(request, template,context).content
+    response = HttpResponse(content_type='application/pdf')
+    pisa_status = pisa.CreatePDF(html_string, dest=response)
+    if pisa_status.err:
+        return HttpResponse('PDF generation error')
+    return response
+
 
         
 

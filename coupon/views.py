@@ -8,15 +8,19 @@ from accounts.models import Users
 # Create your views here.
 def applyCoupon(request,id):
     if request.method == 'POST':
+        if 'message' in request.session:
+            del request.session['message']
         coupon_code = request.POST.get('coupon')
         try: 
             cart = Cart.objects.get(id = id)
             coupon = Coupon.objects.get(coupon_code = coupon_code,min_rate__lte=cart.total_price , max_rate__gte=cart.total_price,is_active = True)
             if coupon.couponuser.filter(user = Users.objects.get(username = request.session['user_exists'])).exists():
                request.session['message'] = 'You have already used this coupon!'
+               cart.is_coupon = False
+               cart.save()
                return redirect('checkout')
             else:
-                del request.session['message']
+                
                 discount_percentage = Decimal(coupon.discount) / 100
                 discount_amount = cart.total_price * discount_percentage
                 new_last_price = float(cart.total_price - discount_amount)
@@ -25,6 +29,8 @@ def applyCoupon(request,id):
                 request.session['coupon'] = coupon.id
                 cart.save()      
         except:
+            cart.is_coupon = False
+            cart.save()
             request.session['message'] = 'Invalid Coupon Code!'
         return redirect('checkout')
 

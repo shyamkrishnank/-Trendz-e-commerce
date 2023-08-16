@@ -16,6 +16,7 @@ urlpatterns = [
     path('returnconfirmation/', views.return_confirmation, name = 'return_confirmation'),
     path('report/', views.report, name = 'report'),
     path('reportFilter/',views.report_filter, name = 'reportFilter'),
-    path('report_download/', views.report_download, name = 'reportDownload')
+    path('report_download/', views.report_download, name = 'reportDownload'),
+    path('invoice/<int:id>', views.invoice, name = 'invoice'),
    
 ]

@@ -21,7 +21,8 @@ urlpatterns=[
     path('delete_adddress/<int:id>', views.delete_address, name = 'delete_address'),
     path('wallet/', views.wallet, name = 'wallet'),
     path('shop/', views.shop, name = 'shop'),
-    path('aboutus/', views.aboutus, name = 'aboutus')
+    path('aboutus/', views.aboutus, name = 'aboutus'),
+    
    
 
 
