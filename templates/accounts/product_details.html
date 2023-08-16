@@ -87,15 +87,8 @@
                                             {% if main_product.stocks <= 0 %}
                                             <a href="#" class="btn-product  btn-cart"><span>Out Of Stock</span></a>
                                             {% else %}
-                                            <a href="#" class="btn-product forPop btn-cart"><span>Buy now</span></a>
+                                            <a href="#" class="btn-product forPop btn-cart"><span>Add to Cart</span></a>
                                             {% endif %}
-    
-                                            <div class="details-action-wrapper">
-                                                <a href="#" class="btn-product forPop btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
-                                                {% if main_product.stocks > 0 %}
-                                                <a href="" id="liveToastBtn" class="btn-product forPop icon-shopping-cart btn-cart-wishlist" title="Cart"><span>Add to Cart</span></a>
-                                                {% endif %}
-                                            </div><!-- End .details-action-wrapper -->
                                         </div><!-- End .product-details-action -->
     
                                         <div class="product-details-footer">
@@ -232,43 +225,10 @@
     
                         <h2 class="title text-center mb-4">You May Also Like</h2><!-- End .title text-center -->
     
-                        <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow owl-loaded owl-drag" data-toggle="owl" data-owl-options="{
-                                &quot;nav&quot;: false,
-                                &quot;dots&quot;: true,
-                                &quot;margin&quot;: 20,
-                                &quot;loop&quot;: false,
-                                &quot;responsive&quot;: {
-                                    &quot;0&quot;: {
-                                        &quot;items&quot;:1
-                                    },
-                                    &quot;480&quot;: {
-                                        &quot;items&quot;:2
-                                    },
-                                    &quot;768&quot;: {
-                                        &quot;items&quot;:3
-                                    },
-                                    &quot;992&quot;: {
-                                        &quot;items&quot;:4
-                                    },
-                                    &quot;1200&quot;: {
-                                        &quot;items&quot;:4,
-                                        &quot;nav&quot;: true,
-                                        &quot;dots&quot;: false
-                                    }
-                                }
-                            }">
-                            <!-- End .product -->
-    
-                            <!-- End .product -->
-    
-                            <!-- End .product -->
-    
-                            <!-- End .product -->
-    
-                            <!-- End .product -->
-                        <div class="owl-stage-outer">
-                            <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1564px;">
-    
+                       
+                        <div class="owl-stage-outer ">
+                           
+                            <div class="owl-stage d-flex">
                                 {% for  product in related_products %}
                                 <div class="owl-item active" style="width: 292.8px; margin-right: 20px;">
                                     <div class="product product-7 text-center">
@@ -278,14 +238,8 @@
                                         <img src="{{product.images.first.image.url}}" alt="Product image" class="product-image">
                                     </a>
     
-                                    <div class="product-action-vertical">
-                                        <a href="#" class="btn-product forPop-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
-                                        <a href="popup/quickView.html" class="btn-product forPop-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
-                                        <a href="#" class="btn-product forPop-icon btn-compare" title="Compare"><span>Compare</span></a>
-                                    </div><!-- End .product-action-vertical -->
-    
                                     <div class="product-action">
-                                        <a href="#" class="btn-product forPop btn-cart"><span>add to cart</span></a>
+                                        <a href="" class="btn-product forPop btn-cart"><span>add to cart</span></a>
                                     </div><!-- End .product-action -->
                                 </figure><!-- End .product-media -->
     
@@ -312,13 +266,11 @@
                                     <!-- End .rating-container -->
                                     <!-- End .product-nav -->
                                 </div><!-- End .product-body -->
-                            </div>
+                                   </div>
                                 </div>
                                 {% endfor %}
-                            </div>
+                            </div> 
                         </div>
-                           
-                        </div><!-- End .owl-carousel -->
                     </div><!-- End .container -->
                 </div><!-- End .page-content -->
         </main>
@@ -328,7 +280,7 @@
                Succesfully Added To Cart!
               </div>
             </div>
-          </div>
+        </div>
           
    {% if user_exists %}
         <script>

@@ -49,6 +49,8 @@ def status_change(request,id):
             return_ = order.returned.first()
             return_.date_returned = timezone.now()
             return_.save()
+        if status == 'Order Cancelled':
+            order.products_price = 0
         order.order_status = status
         order.save()
         return redirect('adminorderdetails',order.order.id)
@@ -168,7 +170,6 @@ def invoice(request,id):
         return HttpResponse('PDF generation error')
     return response
 
-    return render(request,'order/invoice/invoice.html')
 
         
 

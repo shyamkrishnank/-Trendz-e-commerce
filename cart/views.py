@@ -75,7 +75,7 @@ def add_cart1(request,id):
 
 def remove_cartitem(request,id):
     cartitem = CartItems.objects.get(id = id)
-    cartitem.products.stocks += 1
+    cartitem.products.stocks += cartitem.quantity
     cartitem.products.save()
     cartitem.delete()
     return redirect('cart')
